@@ -1617,6 +1617,41 @@ pchShow(c("*","+","a","x"),main="", symbolsize=2.5, linewidth=2,fillcolor="paleg
 \label{fig_pch}
 \end{figure}
 
+\subsubsection{Intervalle de confiance}
+
+La fonction \rfunc{prop.test} permet de calculer l'intervalle de confiance d'une
+proportion. Une première possibilité consiste à lui transmettre une table à une
+dimension et deux entrées. Par exemple, si l'on s'intéresse à la proportion de
+personnes ayant pratiqué une activité physique au cours des douze derniers mois~:
+
+
+<<>>=
+freq(d$sport)
+prop.test(table(d$sport))
+@ 
+
+On remarquera que la fonction a calculé l'intervalle de confiance correspondant
+à la première entrée du tableau, autrement dit celui de la proportion d'enquêtés
+n'ayant pas pratiqué une activité sportive.
+
+Or, nous sommes intéressé par la proportion complémentaire, à savoir celle 
+d'enquêtés ayant pratiqué une activité sportive. On peut dès lors modifier
+l'ordre de la table en indiquant notre modalité d'intérêt avec la fonction
+\rfunc{relevel} ou bien indiquer à \rfunc{prop.test} d'abord le nombre de succès
+puis l'effectif total~:
+
+<<>>=
+prop.test(table(relevel(d$sport,"Oui")))
+prop.test(sum(d$sport=="Oui"),length(d$sport))
+@
+
+Enfin, le niveau de confiance peut être modifié via l'argument 
+\exttt{conf.level}~:
+
+<<>>=
+prop.test(table(relevel(d$sport,"Oui")), conf.level=0.9)
+@
+
 
 \section{Exercices}
 
