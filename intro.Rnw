@@ -1684,7 +1684,7 @@ prop.test(table(relevel(d$sport,"Oui")), conf.level=0.9)
   variable. Représentez ensuite sa distribution par un histogramme en
   10 classes, puis sous forme de boîte à moustache, et enfin sous la
   forme d'un diagramme en bâtons représentant les effectifs de chaque
-  âge.
+  âge. Quel est l'intervalle de confiance à 95~\% de l'âge moyen des enquêtés~? 
 \end{exo}
 
 \begin{exo}{varquali}
@@ -6032,6 +6032,7 @@ summary(df$age)
 hist(df$age, breaks=10, main="Répartition des âges", xlab="Âge", ylab="Effectif")
 boxplot(df$age)
 plot(table(df$age), main="Répartition des âges", xlab="Âge", ylab="Effectif")
+t.test(df$age)
 @ 
   
 \end{solution}
