@@ -1434,6 +1434,25 @@ rug(d$heures.tv, side=2)
 \label{fig_boxplotrug}
 \end{figure}
 
+\subsubsection{Intervalle de confiance}
+
+L'intervalle de confiance d'une moyenne peut être calculé avec la fonction 
+\rfunc{t.test} (fonction qui permet également de réaliser un test t de Student
+comme nous le verrons section \ref{deux_var_quant} \vpageref{deux_var_quant})~:
+
+<<>>=
+t.test(d$heures.tv)
+@ 
+
+Le niveau de confiance peut être précisé via l'argument \texttt{conf.level}~:
+
+<<>>=
+t.test(d$heures.tv, conf.level=0.9)
+@ 
+
+Le nombre d'heures moyennes à regarder la télévision parmi les enquêtés s'avère
+être de 2,2 heures, avec un intervalle de confiance à 95~\% de [2,17~-~2,33] et un
+intervalle de confiance à 90~\% de [2,18~-~2,31].
 
 \subsection{Variable qualitative}
 
@@ -3842,6 +3861,7 @@ data(rp99)
 
 
 \section{Deux variables quantitatives}
+\label{deux_var_quant}
 
 La comparaison de deux variables quantitatives se fait en premier lieu
 graphiquement, en représentant l'ensemble des couples de valeurs. On
