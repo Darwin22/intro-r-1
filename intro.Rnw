@@ -67,7 +67,7 @@
   \end{lrbox}%
   \vspace{3ex}%
   \begin{center}%
-    \fcolorbox{grisfonce}{grisclair}{\usebox{\fcolbox}}%
+    \fcolorbox{grisfonce}{grisinterm}{\usebox{\fcolbox}}%
   \end{center}
   \vspace{3ex}%
 }
