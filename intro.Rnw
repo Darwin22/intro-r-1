@@ -1646,7 +1646,7 @@ prop.test(sum(d$sport=="Oui"),length(d$sport))
 @
 
 Enfin, le niveau de confiance peut être modifié via l'argument 
-\exttt{conf.level}~:
+\texttt{conf.level}~:
 
 <<>>=
 prop.test(table(relevel(d$sport,"Oui")), conf.level=0.9)
