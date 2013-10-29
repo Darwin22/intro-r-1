@@ -4362,7 +4362,170 @@ autre, par exemple ici à la pratique du sport selon le niveau de qualification,
 il peut être intéressant de présenter les pourcentages en colonne sous la forme
 de barres cumulées. Voir figure~\ref{fig_barplot_cum} \vpageref{fig_barplot_cum}.
 
+\chapter{Régression logistique}
 
+La régression logistique est fréquemment utilisée en sciences sociales
+car elle permet d'effectuer un raisonnement dit \textit{toutes choses étant égales
+par ailleurs}. Plus précisément, la régression logistique a pour but d'isoler les
+effets de chaque variable, c'est-à-dire d'identifier les effets 
+résiduels d'une \textit{variable explicative}
+sur une \textit{variable d'intérêt}, une fois pris en compte les autres variables 
+explicatives introduites dans le modèle. La régression logistique est ainsi 
+prisée en épidémiologie pour identifier les facteurs associés 
+à telle ou telle pathologie.
+
+La régression logistique ordinaire ou régression logistique binaire vise à 
+expliquer une variable d'intérêt binaire (c'est-à-dire de type <<~Oui/Non~>>). Les
+variables explicatives qui seront introduites dans le modèle peuvent être 
+quantitatives ou qualitatives.
+
+\section{Préparation des données}
+
+Dans ce chapite, nous allons encore une fois utiliser les données de l'enquête
+\textit{Histoire de vie}, fournies avec l'extension \questionr et
+décrites dans l'annexe~\ref{sec_hdv2003}, page~\pageref{sec_hdv2003}.
+
+<<eval=FALSE>>=
+library(questionr)
+data(hdv2003)
+d <- hdv2003
+@ 
+
+À titre d'exemple, nous allons étudier l'effet de l'âge, du sexe, du niveau 
+d'étude, de la pratique religieuse et du nombre moyen d'heures passées à 
+regarder la télévision par jour.
+
+En premier lieu, il importe de vérifier que notre variable d'intérêt 
+(ici \texttt{sport}) est correctement codée. Une possibilité consiste à
+créer une variable booléenne(vrai / faux) selon que l'individu a pratiqué du 
+sport ou non~:
+
+<<>>=
+d$sport2 <- FALSE
+d$sport2[d$sport=="Oui"] <- TRUE
+@
+
+Dans le cas présent, cette variable n'a pas de valeur manquante. Mais le cas 
+échéant il faut bien renseigner \texttt{NA} pour les valeurs manquantes, les
+individus en question étant alors exclu de l'analyse.
+
+Il n'est pas forcément nécessaire de transformer notre variable d'intérêt en
+variable booléenne. En effet, \R accepte sans problème une variable de type 
+facteur. Cependant, l'ordre des valeurs d'un facteur a de l'importance. En effet,
+\R considère toujours la première modalité comme étant la \textit{modalité de référence}. 
+Dans le cas de la variable d'intérêt, la modalité de référence correspond au fait
+de ne pas remplir le critère étudié, dans notre exemple au fait de ne pas avoir
+eu d'activité sportive au cours des douze derniers mois. Pour connaître l'ordre
+des modalités d'une variable de type facteur, on peut utiliser la fonction 
+\rfunc{levels} ou bien encore tout simplement la fonction \rfunc{freq}~:
+
+<<>>=
+levels(d$sport)
+freq(d$sport)
+@
+
+Dans notre exemple, la modalité <<~Non~>> est déjà la première modalité. Il n'y 
+a donc pas besoin de modifier notre variable. Si ce n'est pas le cas, il faudra
+modifier la modalité de référence avec la fonction \rfunc{relevel} comme nous 
+allons le voir un peu plus loin.
+
+\begin{important}
+  Il est possible d'indiquer un facteur à plus de deux modalités. Dans une telle situation, 
+  \R considérera que tous les modalités, sauf la modalité de référence, est une
+  réalisation de la variable d'intérêt. Cela serait correct par exemple notre
+  variable \texttt{sport} était codée ainsi~: <<~Non~>>, <<~Oui, toutes les 
+  semaines~>>, <<~Oui, au moins une fois par mois~>>, <<~Oui, moins d'une fois
+  par mois~>>. Cependant, afin d'éviter tout risque d'erreur ou de mauvaise 
+  interprétation, il est vivement conseillé de recoder au préalable sa variable
+  d'intérêt en un facteur à deux modalités.
+\end{important}
+
+La notion de modalité de référence s'applique également aux variables explicatives
+qualitatives. En effet, dans un modèle, tous les coefficients sont calculés par 
+rapport à la modalité de référence. Il importe de choisir une modalité de référence
+qui fasse sens afin de faciliter l'interprétation. Par ailleurs, ce choix peut 
+également dépendre de la manière dont on souhaite présenter les résultats. De manière 
+générale on évitera de choisir comme référence une modalité peu représentée dans
+l'échantillon ou bien une modalité correspondant à une situation atypique.
+
+Prenons l'exemple de la variable \texttt{sexe}. Souhaite-t-on connaitre l'effet
+d'être une femme par rapport au fait d'être un homme ou bien l'effet d'être un
+homme par rapport au fait d'être une femme~? Si l'on opte pour le second, alors
+notre modalité de référence sera le sexe féminin. Comme est codée cette variable~?
+
+<<>>=
+freq(d$sexe)
+@
+
+La modalité \texttt{Femme} s'avère ne pas être la première modalité~: nous devons 
+appliquer la fonction \rfunc{relevel}~:
+
+<<>>=
+d$sexe <- relevel(d$sexe,"Femme")
+freq(d$sexe)
+@
+
+Les variables \texttt{age} et \texttt{heures.tv} sont des variables quantitatives.
+Il importe de vérifier qu'elles sont bien enregistrées en tant que variables
+numériques. En effet, il arrive parfois que dans le fichier source les variables
+quantitatives soient renseignées sous forme de valeur textuelle et non sous forme
+numérique.
+
+<<>>=
+str(d$age)
+str(d$heures.tv)
+@
+
+Nos deux variables sont bien renseignées sous forme numérique.
+
+Jetons maintenant un \oe{}il à la variable \texttt{nivetud}~:
+
+<<>>=
+freq(d$nivetud)
+@
+
+En premier lieu, cette variable est détaillée en pas moins de huit modalités
+dont certaines sont peu représentées (seulement 39 individus soit 2~\% n'ont
+jamais fait d'études par exemple). Afin d'améliorier notre modèle logistique, il
+peut être pertinent de regrouper certaines modalités (voir section 
+\ref{regrouper_modalites} \vpageref{regrouper_modalites})~:
+
+<<>>=
+d$etud <- d$nivetud
+levels(d$etud) <- c("Primaire","Primaire","Primaire","Secondaire","Secondaire","Technique/Professionnel","Technique/Professionnel","Supérieur")
+freq(d$etud)
+@
+
+Notre variable comporte également 112 individus avec une valeur manquante. Si nous
+conservons cette valeur manquante, ces 112 individus seront, par défaut, exclus
+de l'analyse. Ces valeurs manquantes n'étant pas négligeable (5,6~\%), nous pouvons
+également faire le choix de considérer ces valeurs manquantes comme une modalité
+supplémentaire. Auquel cas, nous utiliserons la fonction \rfunc{addNA}~:
+
+<<>>=
+levels(d$etud)
+d$etud <- addNA(d$etud)
+levels(d$etud)
+@
+
+\section{Régression logistique binaire}
+
+La fonction \rfunc{glm} (pour \textit{generalized linear models}) permet de calculer 
+une grande variété de modèles statistiques. La régression logistique ordinaire
+correspond au modèle \textit{logit} de la famille des modèles binomiaux, ce que
+l'on indique à \rfunc{glm} avec l'argument \texttt{family=binomial(logit)}.
+
+Le modèle proprement dit sera renseigné sous la forme d'une \textit{formule} 
+(que nous avons déjà rencontrée \vpageref{astuce_formules}).
+
+\section{Sélection de modèles}
+
+\section{Régression logistique multinomiale}
+
+
+\section{Exercices}
+
+reg log sur cuisine
 
 \chapter{Données pondérées}
 
