@@ -143,7 +143,7 @@
 
 <<initialize,echo=FALSE,results="none",cache=FALSE>>=
 options(width=75)
-options(max.print="70")
+options(max.print="100")
 options(prompt="R> ")
 opts_chunk$set(fig.path="tmp/",
                dev="pdf",
@@ -2977,6 +2977,7 @@ d$fs.num <- as.numeric(as.character(d$fs.fac))
 
 
 \subsection{Découper une variable numérique en classes}
+\label{decouper_var_num}
 
 Le premier type de recodage consiste à découper une variable de type
 numérique en un certain nombre de classes. On utilise pour cela la
@@ -4457,7 +4458,7 @@ notre modalité de référence sera le sexe féminin. Comme est codée cette var
 freq(d$sexe)
 @
 
-La modalité \texttt{Femme} s'avère ne pas être la première modalité~: nous devons 
+La modalité \texttt{Femme} s'avère ne pas être la première modalité. Nous devons 
 appliquer la fonction \rfunc{relevel}~:
 
 <<>>=
@@ -4477,6 +4478,17 @@ str(d$heures.tv)
 @
 
 Nos deux variables sont bien renseignées sous forme numérique.
+
+Cependant, l'effet de l'âge est rarement linéaire. Un exemple trivial est par 
+exemple le fait d'occuper un emploi qui sera moins fréquent aux jeunes âges et
+aux âges élevés. Dès lors, on pourra transformer la variable <<~âge~>> en
+groupe d'âges(voir section \ref{decouper_var_num} \vpageref{decouper_var_num})~:
+
+<<>>=
+d$grpage <- cut(d$age,c(16,25,45,65,93),right=FALSE,include.lowest=TRUE)
+freq(d$grpage)
+@
+
 
 Jetons maintenant un \oe{}il à la variable \texttt{nivetud}~:
 
@@ -4516,16 +4528,281 @@ correspond au modèle \textit{logit} de la famille des modèles binomiaux, ce qu
 l'on indique à \rfunc{glm} avec l'argument \texttt{family=binomial(logit)}.
 
 Le modèle proprement dit sera renseigné sous la forme d'une \textit{formule} 
-(que nous avons déjà rencontrée \vpageref{astuce_formules}).
+(que nous avons déjà rencontrée \vpageref{astuce_formules}). On indiquera d'abord
+la variable d'intérêt, suivie du signe \texttt{\~{}} puis de la liste des variables 
+explicatives séparées par un signe \texttt{+}. Enfin, l'argument \texttt{data}
+permettra d'indiquer notre tableau de données.
+
+<<>>=
+reg <- glm(sport ~ sexe + grpage + etud + relig + heures.tv, data=d, family=binomial(logit))
+reg
+@
+
+\begin{remarque}
+  Il est possible de spécifier des modèles plus complexes. Par exemple, 
+  \texttt{x:y} permet d'indiquer l'interaction entre les variables \texttt{x} et
+  \texttt{y}. \texttt{x * y} sera équivalent à \texttt{x + y + x:y}. Pour aller
+  plus loin, voir \url{http://ww2.coastal.edu/kingw/statistics/R-tutorials/formulae.html}.
+\end{remarque}
+
+Une présentation plus complète des résultats est obtenue avec \rfunc{summary}~:
+
+<<>>=
+summary(reg)
+@
+
+Dans le cadre d'un modèle logistique, généralement on ne présente pas les 
+coefficients du modèle mais leur valeur exponentielle, cette dernière correspondant
+en effet à des \textit{odds ratio}, également appelé \textit{rapport des cotes}.
+L'odds ratio diffère du \textit{risque relatif}. Cependent son interprétation est
+similaire. Un odds ratio de 1 signifie l'absence d'effet. Un odds ratio largement
+supérieur à 1 correspond à une augmentation du phénomène étudié et un odds ratio
+largement inféieur à 1 correspond à une diminution du phénomène étudié\footnote{
+Pour plus de détails, voir \url{http://www.spc.univ-lyon1.fr/polycop/odds%20ratio.htm}}.
+
+La fonction \rfunc{coef} permet d'obtenir les coefficients d'un modèle, 
+\rfunc{confint} leurs intervalles de confiance et 
+\rfunc{exp} de calculer l'exponentiel. Les odds ratio et leurs intervalles de
+confiance s'obtiennent ainsi~:
+
+<<>>=
+exp(coef(reg))
+exp(confint(reg))
+@
+
+On pourra faciliter la lecture en combinant les deux~:
+
+<<>>=
+exp(cbind(coef(reg),confint(reg)))
+@
+
+Pour savoir si un odds ratio diffère significativement de 1 (ce qui est identique
+au fait que le coefficient soit différent de 0), on pourra se référer à la colonne
+\texttt{Pr(>|z|)} obtenue avec \rfunc{summary}.
+
+Il y a également une petite fonction bien pratique appelée \rfunc{odds.ratio} et 
+disponible à cette adresse~: \url{http://joseph.larmarange.net/?Calculer-les-Odds-Ratio-d-une}.
+En premier lieu, on va copier le code de cette fonction et l'exécuter dans \R~:
+
+<<>>=
+odds.ratio <- function(reg, level=0.95, digits=3) {
+	if ("glm" %in% class(reg)) {
+		if(reg$family$family == "binomial"){
+			r <- cbind(exp(coef(reg)),exp(confint(reg, level=level))
+					   ,summary(reg)$coefficients[,4])
+			r[,1:3] <- round(r[,1:3],digits=digits)
+			colnames(r)[1] <- "OR"
+			colnames(r)[4] <- "p"
+			printCoefmat(r,signif.stars=TRUE,has.Pvalue=TRUE)
+		} else {
+			stop('reg should be a glm with family=binomial or the result of multinom.')
+		}
+	} else if ("multinom" %in% class(reg)) {
+		coef <- summary(reg)$coefficients
+		ci <- confint(reg,level=level)
+		# From http://www.ats.ucla.edu/stat/r/dae/mlogit.htm
+		z <- summary(reg)$coefficients/summary(reg)$standard.errors
+		p <- p <- (1 - pnorm(abs(z), 0, 1)) * 2
+		d <- dim(ci)
+		r <- array(NA,c(d[1]*d[3],d[2]+2))
+		dimnames(r)[[1]]<-rep("",d[1]*d[3])
+		for (i in 1:d[3]) {
+			fl <- (i-1)*d[1] + 1 #first line
+			ll <- i*d[1] #last line
+			r[fl:ll,] <- cbind(coef[i,],ci[,,i],p[i,])
+			rownames(r)[fl:ll] <- paste0(rownames(coef)[i],"/",colnames(coef))
+		}
+		r[,1:3] <- round(r[,1:3],digits=digits)
+		colnames(r) <- c("OR",dimnames(ci)[[2]],"p")
+		printCoefmat(r,signif.stars=TRUE,has.Pvalue=TRUE)
+	}
+	else 
+		stop('reg should be a glm with family=binomial or the result of multinom.')
+}
+@
+
+Ensuite, il n'y a plus qu'à l'éxécuter~:
+
+<<>>=
+odds.ratio(reg)
+@
+
+
+L'extension \textsf{effects} propose une représentation graphique résumant les
+effets de chaque variable du modèle. Pour cela, il faut appliquer \rfunc{plot}
+au résultat de la fonction \rfunc{allEffects}. Attention~: dans le cas présent
+le graphique ne s'affichera pas correctement car la fonction \rfunc{allEffects}
+ne sait pas gérer correctement les facteurs surlesquels on a appliqué \rfunc{addNA}.
+En effet, \rfunc{addNA} créé une nouvelle modalité qui a pour nom la valeur manquante
+elle-même et non une chaine de caractères. Nous allons donc donner un nom textuel
+à la modalité <<~valeur manquante~>> et recalculer notre régression logistique
+avant d'appeler \rfunc{allEffects}.
+
+<<>>=
+levels(d$etud)[is.na(levels(d$etud))] <- "Manquant"
+reg <- glm(sport ~ sexe + grpage + etud + relig + heures.tv, 
+		   data=d, family=binomial(logit))
+@
+
+Nous obtenons alors la figure \ref{fig_alleffects_reg} \vpageref{fig_alleffects_reg}.
+
+\begin{figure}
+<<>>=
+library(effects)
+plot(allEffects(reg))
+@ 
+\caption{Représentation graphique de l'effet de chaque variable du modèle logistique}
+\label{fig_alleffects_reg}
+\end{figure}
+
+Une manière de tester la qualité d'un modèle est le calcul d'une \textit{matrice 
+de confusion}, c'est-à-dire le tableau croisé des valeurs observées et celles
+des valeurs prédites en appliquant le modèle aux données d'origine.
+
+La fonction \rfunc{predict} avec l'argument \texttt{type="response"} permet 
+d'appliquer notre modèle logistique à un tableau de données et renvoie pour 
+chaque individu la probabilité qu'il ait vécu le phénomène étudié.
+
+<<>>=
+sport.pred <- predict(reg,type="response",newdata=d)
+head(d$sport.pred)
+@
+
+Or notre variable étudiée est de type binaire. Nous devons donc transformer 
+nos probabilités prédites en une variable du type <<~oui/non~>>. Usuellement,
+les probabilités prédites seront réunies en deux groupes selon qu'elles soient
+supérieures ou inférieures à la moitié. La matrice de confusion est alors égale à~:
+
+<<>>=
+table(sport.pred>0.5,d$sport)
+@
+
+Nous avons donc 583 (384+199) prédictions incorrectes sur un total de 1993, soit 
+un taux de mauvais classement de 29,3~\%.
 
 \section{Sélection de modèles}
 
+Il est toujours tentant lorsque l'on recherche les facteurs associés à un 
+phénomène d'inclure un nombre important de variables explicatives potentielles
+dans un mmodèle logistique. Cependant, un tel modèle ne pas forcément le plus
+efficace et certaines variables n'auront probablement pas d'effet significatif
+sur la variable d'intérêt.
+
+La technique de \textit{sélection descendante pas à pas} est une approche visant
+à améliorer son modèle explicatif\footnote{
+  Il existe également des méthodes de \textit{sélection ascendante pas à pas}, 
+  mais nous les aborderons pas ici.
+}. On réalise un premier modèle avec toutes les
+variables spécifiées, puis on regarde s'il est possible d'améliorer le modèle
+en supprimant une des variables du modèle. Si plusieurs variables permettent
+d'améliorer le modèle, on supprimera la variable dont la suppression améliorera
+le plus le modèle. Puis on recommence le même procédé pour voir si la suppression
+d'une seconde variable peut encore améliorer le modèle et ainsi de suite. Lorsque 
+le modèle ne peut plus être améliorer par la suppresion d'une variable, on s'arrête.
+
+Il faut également définir un critère pour déterminer la qualité d'un modèle.
+L'un des plus utilisés est le \textit{Akaike information criterion} ou AIC.
+Plus l'AIC sera faible, meilleure sera le modèle.
+
+La fonction \rfunc{step} permet justement de sélectionner le meilleur modèle par
+une procédure pas à pas descendante basée sur la minimisation de l'AIC. La fonction
+affiche à l'écran les différentes étapes de la sélection et renvoie le modèle final.
+
+<<>>=
+reg2 <- step(reg)
+@
+
+Le modèle initial a un AIC de 2114,8. À la première étape, il apparait que la
+suppression de la variable religion permet diminuer l'AIC à 2109,1. Lors de la 
+seconde étape, toute suppression d'une autre variable ferait augmenter l'AIC. La
+procédure s'arrête donc.
+
 \section{Régression logistique multinomiale}
 
+La régression logistique multinomiale est une extension de la régression logistique
+aux variables qualitatives à trois modalités ou plus. Dans ce cas de figure, chaque 
+modalité de la variable d'intérêt sera comparée à la modalité de réference. Les odds
+ratio seront donc exprimés par rapport à cette dernière.
+
+Nous allons prendre pour exemple la variable \texttt{trav.satisf}, à savoir la 
+satisfaction ou l'insatisfaction au travail.
+
+<<>>=
+freq(d$trav.satisf)
+@
+
+Nous allons choisir comme modalité de référence la position intermédiaire, à savoir
+l'<<~équilibre~>>. De plus, nous n'allons conserver pour l'analyse 
+
+<<>>=
+d$trav.satisf <- relevel(d$trav.satisf, "Equilibre")
+@
+
+Enfin, nous allons aussi en profiter pour raccourcir les étiquettes de la variable
+\texttt{trav.imp}~:
+
+<<>>=
+levels(d$trav.imp) <- c("Le plus","Aussi","Moins","Peu")
+@
+
+
+Pour calculer un modèle logistique multinomial, nous allons utiliser la fonction
+\rfunc{multinom} de l'extension \textsf{nnet}\footnote{Une alternative est d'avoir
+recours à l'extension \textsf{mlogit} que nous n'aborderons pas ici.}. Si l'extension
+n'est pas disponible, vous devrez l'installer (voir section \ref{installation_extensions}
+\vpageref{installation_extensions}). La syntaxe de \rfunc{multinom} est similaire 
+à celle de \texttt{glm}, le paramètre \texttt{family} en moins.
+
+<<>>=
+library(nnet)
+regm <- multinom(trav.satisf ~ sexe + etud + grpage + trav.imp, data=d)
+@
+
+Comme pour la régression logistique, il est possible de réaliser une sélection
+pas à pas descendante~:
+
+<<>>=
+regm2 <- step(regm)
+@
+
+La plupart des fonctions vues précédemment fonctionnent\footnote{Voir 
+\url{http://www.ats.ucla.edu/stat/r/dae/mlogit.htm} (en anglais) pour plus de
+détails.}, de même que la représentation graphique des effets (figure 
+\ref{fig_alleffects_regm} \vpageref{fig_alleffects_regm}).
+
+<<>>=
+summary(regm2)
+odds.ratio(regm2)
+@
+
+\begin{figure}
+<<>>=
+library(effects)
+plot(allEffects(regm2))
+@ 
+\caption{Représentation graphique de l'effet de chaque variable du modèle logistique}
+\label{fig_alleffects_regm}
+\end{figure}
+
+De même, il est possible de calculer la matrice de confusion~:
+
+<<>>=
+table(predict(regm2,newdata=d),d$trav.satisf)
+@
 
 \section{Exercices}
 
-reg log sur cuisine
+\begin{exo}{reg_log}
+  Nous allons utiliser le fichier de données \texttt{Aids2} fourni par l'extension
+  \textsf{MASS}. Chargez cette extension en mémoire, puis utilisez la commande
+  \texttt{data(Aids2)} pour charger ce fichier de données. Un descriptif (en anglais)
+  de ce tableau de données est disponible via la commande \texttt{?Aids2}. Calculer
+  un modèle de régression logistique évaluant l'effet du sexe, de la région 
+  (variable \texttt{state}), de l'âge et de la catégorie de transmission sur la 
+  probabilité d'être toujours en vie.  Représentez graphiquement l'effet des variables
+  explicatives. Calculez des groupes d'âges et refaite le modèle ainsi que le graphique.
+  Calculez les odds ratio. Enfin, réalisez une sélection descendante pas à pas.
+\end{exo}
 
 \chapter{Données pondérées}
 
@@ -5898,6 +6175,7 @@ les analyses statistiques dans ce champ disciplinaire~:
 \url{http://cran.r-project.org/web/views/SocialSciences.html}
 
 \section{Installation des extensions}
+\label{installation_extensions}
 
 Les interfaces graphiques sous \textsf{Windows} ou \textsf{Mac OS X}
 permettent la gestion des extensions par le biais de boîtes de
@@ -6353,10 +6631,36 @@ d.ord <- d[order(d$heures.tv, decreasing=TRUE), c("sexe","heures.tv")]
 head(d.ord,10)
 
 @ 
-
-  
 \end{solution}
 
+
+\begin{solution}{reg_log}
+<<>>=
+library(MASS)
+data(Aids2)
+freq(Aids2$status) # Pour visualier les modalités
+# On souhaite la probabilité d'être en vie
+# La modalité de référence est donc le décès
+Aids2$status <- relevel(Aids2$status,"D") 
+# Premier modèle
+reg <- glm(status ~ state + sex + T.categ + age, data=Aids2, family=binomial(logit))
+# Graphique des effets
+library(effects)
+plot(allEffects(reg))
+# Groupes d'âges
+Aids2$grpage <- quant.cut(Aids2$age,4)
+# Régression
+reg2 <- glm(status ~ state + sex + T.categ + grpage, data=Aids2, family=binomial(logit))
+# Graphique des effets
+plot(allEffects(reg2))
+# Calcul des Odds Ratio
+exp(coef(reg2))
+odds.ratio(reg2) # Alternative
+# Recherche d'un meilleur modèle
+best.reg <- step(reg2)
+@ 
+ 
+\end{solution}
 
 \listoffigures
 
