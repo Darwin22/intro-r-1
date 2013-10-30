@@ -4953,15 +4953,18 @@ Pour ne rien arranger, ces fonctions prennent leurs arguments sous
 forme de formules, c'est-à-dire pas de la manière habituelle. En
 général l'appel de fonction se fait en spécifiant d'abord les
 variables d'intérêt sous forme de formule, puis l'objet \textit{design}.
+L'intervalle de confiance d'une moyenne s'obtient avec \rfunc{confint} et
+celui d'une proportion avec \rfunc{svyciprop}.
 
 Voyons tout de suite quelques exemples~:
 
 <<>>=
 svymean(~age, dw)
+confint(svymean(~age, dw)) # Intervalle de confiance
 svyvar(~heures.tv, dw, na.rm=TRUE)
 svytable(~sexe, dw)
+svyciprop(~sexe, dw) # Intervalle de confiance
 svytable(~sexe+clso, dw)
-
 @ 
 
 En particulier, les tris à plat se déclarent en passant comme argument
