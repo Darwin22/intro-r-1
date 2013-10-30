@@ -4629,22 +4629,17 @@ odds.ratio(reg)
 
 
 L'extension \textsf{effects} propose une représentation graphique résumant les
-effets de chaque variable du modèle. Pour cela, il faut appliquer \rfunc{plot}
-au résultat de la fonction \rfunc{allEffects}. Attention~: dans le cas présent
-le graphique ne s'affichera pas correctement car la fonction \rfunc{allEffects}
-ne sait pas gérer correctement les facteurs surlesquels on a appliqué \rfunc{addNA}.
-En effet, \rfunc{addNA} créé une nouvelle modalité qui a pour nom la valeur manquante
-elle-même et non une chaine de caractères. Nous allons donc donner un nom textuel
-à la modalité <<~valeur manquante~>> et recalculer notre régression logistique
-avant d'appeler \rfunc{allEffects}.
+effets de chaque variable du modèle. Attention~: il y a un bug
+dans les versions antérieures à la 2.3-0. Il est recommandé d'installer la dernière 
+version à partir de R-Forge en utilisant la commande suivante~:
 
-<<>>=
-levels(d$etud)[is.na(levels(d$etud))] <- "Manquant"
-reg <- glm(sport ~ sexe + grpage + etud + relig + heures.tv, 
-		   data=d, family=binomial(logit))
+<<eval=FALSE>>=
+install.packages("effects", repos="http://R-Forge.R-project.org")
 @
 
-Nous obtenons alors la figure \ref{fig_alleffects_reg} \vpageref{fig_alleffects_reg}.
+Nous allons appliquer la fonction \rfunc{plot}
+au résultat de la fonction \rfunc{allEffects}. Nous obtenons alors la figure 
+\ref{fig_alleffects_reg} \vpageref{fig_alleffects_reg}. 
 
 \begin{figure}
 <<>>=
