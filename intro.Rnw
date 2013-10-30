@@ -4363,7 +4363,11 @@ autre, par exemple ici à la pratique du sport selon le niveau de qualification,
 il peut être intéressant de présenter les pourcentages en colonne sous la forme
 de barres cumulées. Voir figure~\ref{fig_barplot_cum} \vpageref{fig_barplot_cum}.
 
+
+
+
 \chapter{Régression logistique}
+\label{chapitre_reglog}
 
 La régression logistique est fréquemment utilisée en sciences sociales
 car elle permet d'effectuer un raisonnement dit \textit{toutes choses étant égales
@@ -4889,7 +4893,7 @@ peuvent être appliquées au résultat d'un \rfunc{wtd.table}) mais
 restent limitées en termes de tests statistiques ou de
 graphiques\ldots
 
-\section{L'extension \textsf{survey}}
+\section{Présentation de l'extension \textsf{survey}}
 
 L'extension \textsf{survey} est spécialement dédiée au traitement
 d'enquêtes ayant des techniques d'échantillonnage et de pondération
@@ -4908,7 +4912,8 @@ pas forcément très accessibles~:
 Pour utiliser les fonctionnalités de l'extension, on doit d'abord
 définir un \textit{design} de notre enquête. C'est-à-dire indiquer
 quel type de pondération nous souhaitons lui appliquer. Dans notre cas
-nous utilisons le \textit{design} le plus simple, avec une variable de
+nous utilisons le \textit{design} ou \textit{plan d'échantillonnage}
+le plus simple, avec une variable de
 pondération déjà calculée. Ceci se fait à l'aide de la fonction
 \rfunc{svydesign}~:
 
@@ -4995,7 +5000,7 @@ faire un test du $\chi^2$ sur un tableau croisé pondéré, il faut utiliser
 svychisq(~sexe + clso, dw)
 @ 
 
-Enfin, \textsf{survey} est également capable de produire des
+\textsf{survey} est également capable de produire des
 graphiques à partir des données pondérées. Des exemples sont donnés
 figure~\ref{fig_surveyplot} \vpageref{fig_surveyplot}.
 
@@ -5011,6 +5016,30 @@ svyboxplot(age~sexe,dw,main="Boxplot double", ylab="Âge", xlab="Sexe")
 \label{fig_surveyplot}
 \end{figure}
 
+Enfin, \textsf{survey} fournit une fonction \rfunc{svyglm} permettant de calculer
+un modèle statistique tout en prenant en compte le plan d'échantillonnage spécifié.
+La syntaxe de \rfunc{svyglm} est proche de celle \rfunc{glm} :
+
+<<>>=
+reg <- svyglm(sport ~ sexe + age + relig + heures.tv, dw, family=binomial(logit))
+@
+
+Le résultat obtenu est similaire à celui de \rfunc{glm} et l'on peut utiliser sans
+problème les fonctions \rfunc{coef}, \conf{confint}, \rfunc{odds.ratio} ou
+\rfunc{predict} abordées au chapitre \ref{chapitre_reglog}.
+
+Par contre, la sélection descendante pas à pas d'un modèle par minimisation de 
+l'AIC avec \texttt{step} ne fonctionnera pas. En effet, il semble qu'il n'existe
+pas encore d'analogue de l'AIC dans le contexte d'un plan d'échantillonage 
+complexe\footnote{Voir cette discussion 
+\url{https://groups.google.com/forum/#!topic/r-help-archive/XcrSW9s7kwI}.}. 
+On pourra se rabattre néanmoins sur une sélection raisonnée des variables à 
+conserver ne prenant par exemple en compte que celles ayant un effet 
+signicatif à 5~\% ou 10~\%.
+
+Par ailleurs, la fonction \rfunc{allEffects} est elle aussi incompatible avec
+\rfunc{svyglm}\footnote{Compatibilité qui pourra éventuellement être introduite
+dans une future version de l'exteion \textsf{effects}.}.
 
 \section{Conclusion}
 
