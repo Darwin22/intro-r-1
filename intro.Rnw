@@ -4940,7 +4940,7 @@ série de fonctions permettant d'effectuer diverses opérations
 statistiques en tenant compte de la pondération. On citera notamment~:
 
 \begin{description}
-\item[\rfunc{svymean}, \rfunc{svyvar}, \rfunc{svytotal}] statistiques univariées 
+\item[\rfunc{svymean}, \rfunc{svyvar}, \rfunc{svytotal}, \rfunc{svyquantile}] statistiques univariées 
 \item[\rfunc{svytable}] tableaux croisés
 \item[\rfunc{svyglm}] modèles linéaires généralisés
 \item[\rfunc{svyplot}, \rfunc{svyhist}, \rfunc{svyboxplot}] fonctions graphiques
@@ -4964,6 +4964,7 @@ Voyons tout de suite quelques exemples\footnote{
 <<>>=
 svymean(~age, dw)
 confint(svymean(~age, dw)) # Intervalle de confiance
+svyquantile(~age, dw, quantile=c(0.25,0.5,0.75),ci=TRUE)
 svyvar(~heures.tv, dw, na.rm=TRUE)
 svytable(~sexe, dw)
 svyciprop(~sexe, dw) # Intervalle de confiance
