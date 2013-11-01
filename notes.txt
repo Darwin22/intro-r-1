@@ -5,3 +5,6 @@ Packages R nécessaires pour compiler le document :
 - survey
 - effects
 - nnet
+- ade4
+- FactoMineR
+- RColorBrewer

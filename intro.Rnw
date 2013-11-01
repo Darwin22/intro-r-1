@@ -5215,6 +5215,325 @@ quand même donner les conseils suivants~:
 \end{itemize}
 
 
+\chapter{Analyse des correspondances multiples (ACM)}
+\label{chapitre_acm}
+
+Il existe plusieurs techniques d'\textit{analyse factorielle} dont les plus courantes sont 
+l'\textit{analyse en composante principale} (ACP) porte sur des 
+variables quantitatives, l'\textit{analyse factorielle des correspondances}
+(AFC) porte sur deux variables qualitatives et l'\textit{analyse des
+correspondances multiples} (ACM) sur plusieurs variables qualitatives (il s'agit
+d'une extension de l'AFC).
+
+Bien que ces techniques soient disponibles dans les extensions standards de \R,
+il st souvent préférable d'avoir recours à deux autres extensions plus complètes,
+\textsf{ade4} et \textsf{FactoMineR}, chacune ayant ses avantages et des possibilités
+différentes. Voici les fonctions les plus fréquentes~:
+
+\begin{center}
+  \begin{tabular}{>{\raggedright}p{2cm}>{\raggedright}p{3.5cm}>{\raggedright}p{2.5cm}>{\raggedright}p{2.5cm}>{\raggedright}p{2.5cm}}
+    \textbf{Analyse} & \textbf{Variables} & \textbf{Fonction standard} & \textbf{Fonction}\newline\textsf{ade4} & \textbf{Fonction}\newline\textsf{FactoMineR} \tabularnewline
+    \hline
+    ACP & plusieurs variables quantitatives & \rfunc{princomp} (\textsf{stats}) & \rfunc{dudi.pca} & \rfunc{PCA} \tabularnewline
+    AFC & deux variables qualitatives & \rfunc{corresp} (\textsf{MASS}) & \rfunc{dudi.coa} & \rfunc{CA} \tabularnewline
+    ACM & plusieurs variables qualitatives & \rfunc{dudi.acm} (\textsf{MASS}) & \rfunc{dudi.acm} & \rfunc{MCA} \tabularnewline
+  \end{tabular}
+\end{center}
+
+Dans la suite de ce chapitre, nous n'arboderons que l'analyse des correspondances
+multiples (ACM).
+
+\section{Principe général}
+
+L'analyse des correspondances multiples est une technique descriptive visant à
+résumer l'information contenu dans un grand nombre de variables afin de faciliter
+l'interprétention des corrélations existantes entre ces différentes variables.
+On cherche à savoir quelles sont les modalités corrélées entre elles.
+
+L'idée générale est la suivante\footnote{
+  Pour une présentation plus détaillée, 
+  voir \url{http://www.math.univ-toulouse.fr/~baccini/zpedago/asdm.pdf}.
+}. L'ensemble des individus peut être représenté
+dans un espace à plusieurs dimensions où chaque axe représente les différentes
+variables utilisées pour décrire chaque individu. Plus précisément, pour chaque 
+variable qualitative, il y a autant d'axes que de modalités moins un. Ainsi il 
+faut trois axes pour décrire une variable à quatre modalités. Un tel nuage de 
+points est aussi difficile à interpréter que de lire directement le fichier de
+données. On ne voit pas es corrélations qu'il peut y avoir entre modalités, par
+exemple qu'aller au cinéma est plus fréquent chez les personnes habitant en 
+milieu urbain. Afin de mieux représenter ce nuage de points, on va procéder à
+un changement de systèmes de coordonnées. Les individus seront dès lors 
+projetés et représentés sur un nouveau système d'axe. Ce nouveau système d'axes
+est choisis de telle manière que la majorité des variations soit concentrées sur
+les premiers axes. Les deux-trois premiers axes permettront d'expliquer
+la majorité des différences observées dans l'échantillon, les autres axes 
+n'apportant qu'une faible part additionnelle d'information. Dès lors, l'analyse
+pourra se concentrer sur ses premiers axes qui constitueront un bon résumé des
+variations observables dans l'échantillon.
+
+\section{ACM avec \textsf{ade4}}
+
+Si l'extension \textsf{ade4} n'est pas présente sur votre PC, il vous faut 
+l'installer~:
+
+<<eval=FALSE>>=
+install.packages("ade4",dep=TRUE)
+@
+
+Comme précédemment, nous utiliserons le fichier de données \texttt{hdv2003}
+fourni avec l'extension \textsf{questionr}.
+
+<<>>=
+library(questionr)
+data(hdv2003)
+d <- hdv2003
+@
+
+En premier lieu, comme dans le chapitre \ref{chapitre_reglog} sur la régression
+logistique, nous allons créer une variable groupe d'âges et regrouper les modalités
+de la variable <<~niveau d'étude~>>.
+
+<<>>=
+d$grpage <- cut(d$age,c(16,25,45,65,93),right=FALSE,include.lowest=TRUE)
+d$etud <- d$nivetud
+levels(d$etud) <- c("Primaire","Primaire","Primaire","Secondaire","Secondaire","Technique/Professionnel","Technique/Professionnel","Supérieur")
+@
+
+Ensuite, nous allons créer un tableau de données ne contenant que les variables
+que nous souhaitons prendre en compte pour notre analyse factorielle.
+
+<<>>=
+dt <- d[,c("grpage","sexe","etud","peche.chasse","cinema","cuisine","bricol","sport","lecture.bd")]
+@
+
+Le calcul de l'ACM se fait tout simplement avec la fonction \rfunc{dudi.acm}. 
+
+<<eval=FALSE>>=
+acm <- dudi.acm(dt)
+@
+
+Par défaut, la fonction affichera le graphique des valeurs propres de chaque axe
+(nous y reviendrons) et vous demandera le nombre d'axes que vous souhaitez 
+conserver dans les résultats. Le plus souvent, cinq axes seront largement plus
+que suffisants. Vous pouvez également éviter cette étape en indiquant directement
+à \rfunc{dudi.acm} de vous renvoyer les cinq premiers axes ainsi.
+
+<<>>=
+acm <- dudi.acm(dt, scannf=FALSE, nf=5)
+@
+
+\begin{figure}
+<<>>=
+screeplot(acm)
+@ 
+\caption{Valeurs propres ou inerties de chaque axe}
+\label{fig_acm_eig}
+\end{figure}
+
+Le graphique des valeurs propres peut être reproduit avec \rfunc{screeplot} 
+(voir figure \ref{fig_acm_eig} \vpageref{fig_acm_eig}).
+Les mêmes valeurs pour les premiers axes s'obtiennent 
+également avec \rfunc{summary}.
+
+<<>>=
+summary(acm)
+@
+
+L'inertie totale est de 1,451 et l'axe 1 en explique 0,1474 soit 17~\%. L'inertie
+projetée cumulée nous indique que les deux premiers axes expliquent à eux seuls
+29~\% des variations observées dans notre échantillon.
+
+Pour comprendre la signification des différents axes, il importe d'identifier
+quelles sont les variables/modalités qui contribuent le plus à chaque axe. Une 
+première représentation graphique est le cercle de corrélation des modalités. 
+Pour cela, on aura recours à \rfunc{s.corcicle} (voir figure \ref{fig_corcircle}
+\vpageref{fig_corcircle}). On indiquera d'abord \texttt{acm\$co} si l'on 
+souhaite représenter les modalités ou \texttt{acm\$li} si l'on souhaite 
+représenter les individus. Les deux chiffres suivant indiquent les
+deux axes que l'on souhaite afficher (dans le cas présent les deux premiers axes).
+Enfin, le paramètre \texttt{clabel} permet de modifier la taille des étiquettes.
+
+\begin{figure}
+<<>>=
+s.corcircle(acm$co, 1, 2, clabel=0.7)
+@ 
+\caption{Cercle de corrélations des modalités sur les deux premiers axes}
+\label{fig_corcircle}
+\end{figure}
+
+On pourra avoir également recours à \rfunc{boxplot} pour visualiser comment se
+répartissent les modalités de chaque variable sur un axe donné. Voir les figures
+\ref{fig_acm_boxplot1} et \ref{fig_acm_boxplot2} \vpageref{fig_acm_boxplot1}.
+
+\begin{figure}
+<<>>=
+boxplot(acm)
+@ 
+\caption{Répartition des modalités selon le premier axe}
+\label{fig_acm_boxplot1}
+\end{figure}
+
+\begin{figure}
+<<>>=
+boxplot(acm, 2)
+@ 
+\caption{Répartition des modalités selon le second axe}
+\label{fig_acm_boxplot2}
+\end{figure}
+
+Pour représenter, les individus ou les modalités dans le plan factoriel, 
+on utilisera la fonction \rfunc{s.label}. Il est bien sur possible de préciser 
+les axes à représenter. L'argument \texttt{boxes} permet d'indiquer si l'on 
+souhaite tracer une boîte pour chaque modalité.
+
+\begin{figure}
+<<>>=
+s.label(acm$co, clabel=0.7)
+@ 
+\caption{Répartition des modalités selon les deux premiers axes}
+\label{fig_acm_mod_plan12}
+\end{figure}
+
+\begin{figure}
+<<>>=
+s.label(acm$co, 3, 4, clabel=0.7, boxes=FALSE)
+@ 
+\caption{Répartition des modalités selon les axes 3 et 4}
+\label{fig_acm_mod_plan34}
+\end{figure}
+
+\begin{figure}
+<<>>=
+s.label(acm$li, clabel=0, pch=17)
+@ 
+\caption{Répartition des individus selon les deux premiers axes}
+\label{fig_acm_ind_plan12}
+\end{figure}
+
+La figure \ref{fig_acm_mod_plan12} \vpageref{fig_acm_mod_plan12} représente les
+modalités sur les deux premiers axes tandis que la figure \ref{fig_acm_mod_plan34}
+les représente selon les axes 3 et 4. La figure \ref{fig_acm_ind_plan12}, quant
+à elle, représente les individus selon les deux premiers axes. En indiquant 
+\texttt{clabel=0} (une taille nulle pour les étiquettes), \rfunc{s.label} remplace
+chaque observation par un symbole qui peut être spécifié avec \texttt{pch} (pour
+les différentes valeurs possibles, voir la figure \ref{fig_pch} \vpageref{fig_pch}).
+
+La fonction \rfunc{s.value} permet notamment de représenter un troisième axe factoriel. 
+Sur la figure \ref{fig_acm_svalue} \vpageref{fig_acm_svalue}, nous projettons 
+les individus selon les deux premiers axes factoriels. La taille et la couleur 
+des carrés dépendent pour leur part de la coordonnée des individus 
+sur le troisième axe factoriel. Le paramètre \texttt{csi} permet d'ajuster la
+taille des carrés.
+
+\begin{figure}
+<<>>=
+s.value(acm$li, acm$li[,3], 1, 2, csi=0.5)
+@ 
+\caption{Répartition des individus selon les trois premiers axes}
+\label{fig_acm_svalue}
+\end{figure}
+
+\rfunc{s.arrow} permet de représenter les vecteurs variables ou les vecteurs 
+individus sous la forme d’une flèche allant de l’origine du plan factoriel 
+aux coordonnées des variables/individus (voir figure \ref{fig_acm_sarrow}
+\vpageref{fig_acm_sarrow}).
+
+\begin{figure}
+<<>>=
+s.arrow(acm$co, clabel=0.7)
+@ 
+\caption{Vecteurs des modalités selon les deux premiers axes}
+\label{fig_acm_sarrow}
+\end{figure}
+
+\rfunc{s.hist} permet de représenter des individus (ou des modalités) sur le plan
+factoriel et d’afficher leur distribution sur chaque axe (figure \ref{fig_acm_shist} 
+\vpageref{fig_acm_shist}).
+
+\begin{figure}
+<<>>=
+s.hist(acm$li, clabel=0, pch=15)
+@ 
+\caption{Distribution des individus dans le plan factoriel}
+\label{fig_acm_shist}
+\end{figure}
+
+\rfunc{s.class} et \rfunc{s.chull} permettent de représenter les différentes 
+observations classées en plusieurs catégories. Cela permet notamment de projeter
+certaines variables. \rfunc{s.class} représente les observations par des points,
+lie chaque observation au barycentre de la modalité à laquelle elle appartient
+et dessine une ellipse représentant la forme générale du nuage de points 
+(figure \ref{fig_acm_sclass} \vpageref{fig_acm_sclass}). 
+\rfunc{s.chull} représente les barycentres de chaque catégorie et dessine des 
+lignes de niveaux représentant la distribution des individus de cette catégorie.
+Les individus ne sont pas directement représentés (figure \ref{fig_acm_schull}
+\vpageref{fig_acm_schull}).
+
+\begin{figure}
+<<>>=
+library(RColorBrewer)
+s.class(acm$li,dt$sexe,col=brewer.pal(4,"Set1"))
+@ 
+\caption{Individus dans le plan factoriel selon le sexe (\texttt{s.class})}
+\label{fig_acm_sclass}
+\end{figure}
+
+\begin{figure}
+<<>>=
+s.chull(acm$li,dt$sexe,col=brewer.pal(4,"Set1"))
+@ 
+\caption{Individus dans le plan factoriel selon le sexe (\texttt{s.chull})}
+\label{fig_acm_schull}
+\end{figure}
+
+
+\begin{remarque}
+  Il est préférable de fournir une liste de couleurs (via le paramètre \texttt{col})
+  pour rendre le graphique plus lisible. Si vous avez installé l'extension
+  \textsf{RColorBrewer}, vous pouvez utiliser les différentes palettes de couleurs
+  proposées. Pour afficher les palettes disponibles, utilisez \rfunc{display.brewer.all}.
+  Pour obtenir une palette de couleurs, utilisez la fonction \rfunc{brewer.pal} avec 
+  les arguments \texttt{n} (nombre de couleurs demandées) et \texttt{pal} (nom de la
+  palette de couleurs désirée, voir figure \ref{fig_RColorBrewer} 
+  \vpageref{fig_RColorBrewer}).
+\end{remarque}
+
+\begin{astuce}
+  La variable catégorielle transmise à \rfunc{s.class} ou \rfunc{s.chull} n'est pas
+  obligatoirement une des variables retenues pour l'ACM. Il est tout à fait possible
+  d'utiliser une autre variable. Par exemple~:
+  
+  <<eval=FALSE>>=
+  s.class(acm$li,d$trav.imp,col=brewer.pal(4,"Set1"))
+  @
+\end{astuce}
+
+\begin{figure}
+<<>>=
+library(RColorBrewer)
+display.brewer.all(8)
+@ 
+\caption{Palettes de couleurs disponibles dans \textsf{RColorBrewer}}
+\label{fig_RColorBrewer}
+\end{figure}
+
+Les fonctions \rfunc{scatter} et \rfunc{biplot} sont équivalentes~: elles appliquent
+\rfunc{s.class} à chaque variable utilisée pour l'ACM. Voir la figure 
+\ref{fig_acm_scatter} \vpageref{fig_acm_scatter}.
+
+\begin{figure}
+<<>>=
+scatter(acm, col=brewer.pal(4,"Set1"))
+@ 
+\caption{La fonction \textsf{scatter} appliquée au résultat d'une ACM}
+\label{fig_acm_scatter}
+\end{figure}
+
+
+
+
+
+
 
 \chapter{Exporter les résultats}
 
