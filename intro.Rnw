@@ -2902,6 +2902,15 @@ fournis directement à la fonction appelée.
 tapply(d$bricol, d$sexe, freq, total=TRUE)
 @ 
 
+\begin{remarque}
+  La fonction \rfunc{by} est un équivalent (pour les tableaux de données) de
+  \rfunc{tapply}. La présentation des résultats diffère légèrement.
+  
+  <<>>=
+  tapply(d$age, d$sexe, mean)
+  by(d$age, d$sexe, mean)
+  @
+\end{remarque}
 
 
 \section{Recodages}
@@ -4944,12 +4953,14 @@ statistiques en tenant compte de la pondération. On citera notamment~:
 \begin{description}
 \item[\rfunc{svymean}, \rfunc{svyvar}, \rfunc{svytotal}, \rfunc{svyquantile}] statistiques univariées 
 \item[\rfunc{svytable}] tableaux croisés
+\item[\rfunc{svychisq}] test du $\chi^2$
+\item[\rfunc{svyby}] statistiques selon un facteur
 \item[\rfunc{svyglm}] modèles linéaires généralisés
 \item[\rfunc{svyplot}, \rfunc{svyhist}, \rfunc{svyboxplot}] fonctions graphiques
 \end{description}
 
-D'autres fonctions sont disponibles, comme \texttt{svyratio} ou
-\texttt{svyby}, mais elles ne seront pas abordées ici.
+
+D'autres fonctions sont disponibles, comme \texttt{svyratio}, mais elles ne seront pas abordées ici.
 
 Pour ne rien arranger, ces fonctions prennent leurs arguments sous
 forme de formules, c'est-à-dire pas de la manière habituelle. En
@@ -5009,7 +5020,16 @@ faire un test du $\chi^2$ sur un tableau croisé pondéré, il faut utiliser
 svychisq(~sexe + clso, dw)
 @ 
 
-\textsf{survey} est également capable de produire des
+Le principe de la fonction \rfunc{svyby} est similaire à celui de \{tapply}
+(voir section \ref{sec_tapply} \vpageref{sec_tapply}). Elle permet de calculer
+des statistiques selon plusieurs sous-groupes définis par un facteur. 
+Par exemple~:
+
+<<>>=
+svyby(~age, ~sexe, dw, svymean)
+@
+
+Enfin, \textsf{survey} est également capable de produire des
 graphiques à partir des données pondérées. Des exemples sont donnés
 figure~\ref{fig_surveyplot} \vpageref{fig_surveyplot}.
 
