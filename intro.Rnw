@@ -5292,6 +5292,11 @@ n'apportant qu'une faible part additionnelle d'information. Dès lors, l'analyse
 pourra se concentrer sur ses premiers axes qui constitueront un bon résumé des
 variations observables dans l'échantillon.
 
+Avant toute ACM, il est indispensable de réaliser une analyse préliminaire de chaque variable,
+afin de voir si toutes les classes sont aussi bien représentées ou s’il existe un
+déséquilibre. L’ACM est sensible aux effectifs faibles, aussi regrouper les classes
+quand cela est nécessaire.
+
 \section{ACM avec \textsf{ade4}}
 
 Si l'extension \textsf{ade4} n'est pas présente sur votre PC, il vous faut 
@@ -5354,7 +5359,10 @@ screeplot(acm)
 Le graphique des valeurs propres peut être reproduit avec \rfunc{screeplot} 
 (voir figure \ref{fig_acm_eig} \vpageref{fig_acm_eig}).
 Les mêmes valeurs pour les premiers axes s'obtiennent 
-également avec \rfunc{summary}.
+également avec \rfunc{summary}\footnote{
+  On pourra également avoir recours à la fonction \rfunc{inertia.dudi} pour
+  l'ensemble des axes.
+}.
 
 <<>>=
 summary(acm)
@@ -5383,7 +5391,10 @@ s.corcircle(acm$co, 1, 2, clabel=0.7)
 \end{figure}
 
 On pourra avoir également recours à \rfunc{boxplot} pour visualiser comment se
-répartissent les modalités de chaque variable sur un axe donné. Voir les figures
+répartissent les modalités de chaque variable sur un axe donné\footnote{
+  La fonction \rfunc{score} constituera également une aide à l'interprétation
+  des axes.
+}. Voir les figures
 \ref{fig_acm_boxplot1} et \ref{fig_acm_boxplot2} \vpageref{fig_acm_boxplot1}.
 
 \begin{figure}
@@ -5400,6 +5411,25 @@ boxplot(acm, 2)
 @ 
 \caption{Répartition des modalités selon le second axe}
 \label{fig_acm_boxplot2}
+\end{figure}
+
+Le tableau \texttt{acm\$cr} contient les rapports de corrélation (variant de 0 à 1)
+entre les variables et les axes choisis au départ de l’ACM. Pour représenter graphiquement
+ces rapports, utiliser \texttt{barplot(acm\$cr[,num],names.arg=row.names(
+acm\$cr),las=2)} où \texttt{num} est le numéro de l’axe à représenter (voir figure
+\ref{fig_rapports_corr} \vpageref{fig_rapports_corr}). Pour l’interprétation des 
+axes, se concentrer sur les variables les plus structurantes,
+c'est-à-dire dont le rapport de corrélation est le plus proche de 1.
+
+\begin{figure}
+<<>>=
+par(mfrow = c(2,2))
+for (i in 1:4)
+  barplot(acm$cr[,i],names.arg=row.names(acm$cr),las=2, main=paste("Axe",i))
+par(mfrow = c(1,1))
+@ 
+\caption{Rapports de corrélation des variables sur les 4 premiers axes}
+\label{fig_rapports_corr}
 \end{figure}
 
 Pour représenter, les individus ou les modalités dans le plan factoriel, 
