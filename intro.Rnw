@@ -5567,10 +5567,10 @@ Comme avec \textsf{ade4}, il est nécessaire de préparer les données au préal
 \texttt{ncp} permettant de choisir le nombre d'axes à retenir~:
 
 <<>>=
-acm <- MCA(dt, ncp=5, graph=FALSE)
-acm
-acm$eig
-sum(acm$eig$eigenvalue)
+acm2 <- MCA(dt, ncp=5, graph=FALSE)
+acm2
+acm2$eig
+sum(acm2$eig$eigenvalue)
 @
 
 En premier lieu, il apparait que l'inertie totale obtenue avec \rfunc{MCA} est 
@@ -5581,12 +5581,12 @@ additionnelle. Pour calculer l'ACM uniquement sur les individus n'ayant pas de
 valeur manquante, on aura recours à \rfunc{complete.cases}~:
 
 <<>>=
-acm <- MCA(dt[complete.cases(dt),], ncp=5, graph=FALSE)
-acm$eig
-sum(acm$eig$eigenvalue)
+acm2 <- MCA(dt[complete.cases(dt),], ncp=5, graph=FALSE)
+acm2$eig
+sum(acm2$eig$eigenvalue)
 @
 
-Les possibilités graphiques de \rfunc{FactoMineR} sont plus limitées que celles
+Les possibilités graphiques de \rfunc{FactoMineR} sont différentes de celles
 de \rfunc{ade}.
 Un recours à la fonction \rfunc{plot} affichera par défaut les individus, les 
 modalités et les variables. La commande \texttt{?plot.MCA} affichera toutes les
@@ -5599,7 +5599,7 @@ Voir figures \ref{fig_acm_plot_mca1}, \ref{fig_acm_plot_mca2}, \ref{fig_acm_plot
 
 \begin{figure}
 <<>>=
-plot(acm)
+plot(acm2)
 @ 
 \caption{Plan factoriel (deux premiers axes)}
 \label{fig_acm_plot_mca1}
@@ -5607,7 +5607,7 @@ plot(acm)
 
 \begin{figure}
 <<>>=
-plot(acm, axes=c(3,4))
+plot(acm2, axes=c(3,4))
 @ 
 \caption{Plan factoriel (axes 3 et 4)}
 \label{fig_acm_plot_mca2}
@@ -5615,7 +5615,7 @@ plot(acm, axes=c(3,4))
 
 \begin{figure}
 <<>>=
-plot(acm, choix="ind")
+plot(acm2, choix="ind")
 @ 
 \caption{Plan factoriel (seulement les individus et les catégories)}
 \label{fig_acm_plot_mca3}
@@ -5623,7 +5623,7 @@ plot(acm, choix="ind")
 
 \begin{figure}
 <<>>=
-plot(acm, choix="ind", invisible="ind")
+plot(acm2, choix="ind", invisible="ind")
 @ 
 \caption{Plan factoriel (seulement les catégories)}
 \label{fig_acm_plot_mca4}
@@ -5631,7 +5631,7 @@ plot(acm, choix="ind", invisible="ind")
 
 \begin{figure}
 <<>>=
-plot(acm, choix="var")
+plot(acm2, choix="var")
 @ 
 \caption{Plan factoriel (seulement les variables)}
 \label{fig_acm_plot_mca5}
@@ -5649,7 +5649,7 @@ des coordonnées des observations relevant de chaque catégorie (voir figure
 
 \begin{figure}
 <<warning=FALSE>>=
-plotellipses(acm)
+plotellipses(acm2)
 @ 
 \caption{Ellipses de confiance (\texttt{means=TRUE}) dans le plan factoriel}
 \label{fig_acm_plotellipses}
@@ -5657,7 +5657,7 @@ plotellipses(acm)
 
 \begin{figure}
 <<warning=FALSE>>=
-plotellipses(acm, means=FALSE)
+plotellipses(acm2, means=FALSE)
 @ 
 \caption{Ellipses de confiance (\texttt{means=FALSE}) dans le plan factoriel}
 \label{fig_acm_plotellipses2}
@@ -5684,7 +5684,7 @@ le résultat.}~>>
 Source~: \url{http://factominer.free.fr/factosbest/description-des-dimensions.html}
 
 <<>>=
-dimdesc(acm, axes=1:2)
+dimdesc(acm2, axes=1:2)
 @
 
 
