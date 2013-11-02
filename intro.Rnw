@@ -5419,6 +5419,16 @@ les représente selon les axes 3 et 4. La figure \ref{fig_acm_ind_plan12}, quant
 chaque observation par un symbole qui peut être spécifié avec \texttt{pch} (pour
 les différentes valeurs possibles, voir la figure \ref{fig_pch} \vpageref{fig_pch}).
 
+\begin{astuce}
+  Lorsque l’on réalise une ACM, il n’est pas rare que plusieurs observations 
+  soient identiques, c’est-à-dire correspondent à la même combinaison de modalités.
+  Dès lors, ces observations seront projetées sur le même point dans le plan factoriel.
+  Une représentation classique des observations avec \rfubnc{s.label} ne permettra 
+  pas de rendre des effectifs de chaque point. Vous trouverez à cette adresse 
+  (\url{http://joseph.larmarange.net/?article147}) une petite fonction \rfunc{s.freq}
+  représentant chaque point par un carré proportionnel au nombre d’individus.
+\end{astuce}
+
 La fonction \rfunc{s.value} permet notamment de représenter un troisième axe factoriel. 
 Sur la figure \ref{fig_acm_svalue} \vpageref{fig_acm_svalue}, nous projettons 
 les individus selon les deux premiers axes factoriels. La taille et la couleur 
