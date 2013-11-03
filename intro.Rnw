@@ -5266,6 +5266,11 @@ différentes. Voici les fonctions les plus fréquentes~:
 Dans la suite de ce chapitre, nous n'arboderons que l'analyse des correspondances
 multiples (ACM).
 
+\begin{remarque}
+  On trouvera également de nombreux supports de cours en français sur l'analyse factorielle sur
+  le site de François Gilles Carpentier~: \url{http://geai.univ-brest.fr/~carpenti/}.
+\end{remarque}
+
 \section{Principe général}
 
 L'analyse des correspondances multiples est une technique descriptive visant à
