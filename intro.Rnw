@@ -5244,7 +5244,8 @@ l'\textit{analyse en composante principale} (ACP) porte sur des
 variables quantitatives, l'\textit{analyse factorielle des correspondances}
 (AFC) porte sur deux variables qualitatives et l'\textit{analyse des
 correspondances multiples} (ACM) sur plusieurs variables qualitatives (il s'agit
-d'une extension de l'AFC).
+d'une extension de l'AFC). Pour combiner des variables à la fois quantitatives
+et qualitatives, on pourra avoir recours à l'analyse mixte de Hill et Smith.
 
 Bien que ces techniques soient disponibles dans les extensions standards de \R,
 il st souvent préférable d'avoir recours à deux autres extensions plus complètes,
@@ -5257,7 +5258,8 @@ différentes. Voici les fonctions les plus fréquentes~:
     \hline
     ACP & plusieurs variables quantitatives & \rfunc{princomp} (\textsf{stats}) & \rfunc{dudi.pca} & \rfunc{PCA} \tabularnewline
     AFC & deux variables qualitatives & \rfunc{corresp} (\textsf{MASS}) & \rfunc{dudi.coa} & \rfunc{CA} \tabularnewline
-    ACM & plusieurs variables qualitatives & \rfunc{dudi.acm} (\textsf{MASS}) & \rfunc{dudi.acm} & \rfunc{MCA} \tabularnewline
+    ACM & plusieurs variables qualitatives & \rfunc{mca} (\textsf{MASS}) & \rfunc{dudi.acm} & \rfunc{MCA} \tabularnewline
+    Analyse mixte de Hill et Smith & plusieurs variables quantitatives et/ou qualitatives & --- & \rfunc{dudi.mix} & --- \tabularnewline
   \end{tabular}
 \end{center}
 
