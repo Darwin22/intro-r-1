@@ -4970,7 +4970,7 @@ L'intervalle de confiance d'une moyenne s'obtient avec \rfunc{confint} et
 celui d'une proportion avec \rfunc{svyciprop}.
 
 Voyons tout de suite quelques exemples\footnote{
-  Pour d'autres examples, voir 
+  Pour d'autres exemples, voir 
   \url{http://www.ats.ucla.edu/stat/r/faq/svy_r_oscluster.htm} (en anglais).
 }~:
 
@@ -5916,7 +5916,7 @@ le résultat obtenu sera différent. De manière générale, les individus prés
 des caractéristiques rares dans la population vont se retrouver éloignés des 
 individus présentant des caractéristiques fortement représentées.
 
-\subsection{Example}
+\subsection{Exemple}
 
 Nous allons reprendre l'ACM calculée avec \texttt{dudi.acm} (\textsf{ade4}) au
 chapitre \ref{chapitre_acm}. La matrice des distances s'obtient dès lors avec
