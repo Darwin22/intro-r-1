@@ -5486,6 +5486,11 @@ les différentes valeurs possibles, voir la figure \ref{fig_pch} \vpageref{fig_p
   représentant chaque point par un carré proportionnel au nombre d’individus.
 \end{astuce}
 
+\begin{astuce}
+  Gaston Sanchez propose un graphique amélioré des modalités dans le plan factoriel
+  à cette adresse~: \url{http://rpubs.com/gaston/MCA}.
+\end{astuce}
+
 La fonction \rfunc{s.value} permet notamment de représenter un troisième axe factoriel. 
 Sur la figure \ref{fig_acm_svalue} \vpageref{fig_acm_svalue}, nous projettons 
 les individus selon les deux premiers axes factoriels. La taille et la couleur 
