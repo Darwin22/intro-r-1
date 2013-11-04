@@ -6557,6 +6557,32 @@ seconde inflexion de la courbe des sauts d'inertie, et en exécutant de nouveau
 le programme à partir de cette ligne)~: les stables et les mobiles se trouvent 
 alors dans des classes distinctes.
 
+\begin{astuce}
+  Une astuce publiée sur \url{http://joseph.larmarange.net/?article137} permet de
+  représenter le tapis de l'ensemble des séquences selon l'ordre du dendrogramme.
+  On commencera par recopier dans \R le code de la fonction \rfunc{seq.heatmap}
+  qu'il suffit ensuite d'appeler.
+  
+  <<echo=FALSE>>=
+	seq.heatmap <- function (seq, tree, with.missing=FALSE, ...) {
+		if (class(tree)!="dendrogram") tree <- as.dendrogram(tree)
+		mat <- seq
+		for (i in 1:length(seq)){
+			mat[mat[,i]=="%",i] <- NA
+			mat[,i] <- as.numeric(mat[,i])
+		}
+		mat <- as.matrix(mat)
+		col <- attr(seq,"cpal")
+		if (with.missing) col <- c(col,attr(seq,"missing.color"))
+		heatmap(mat, tree, NA,  na.rm=FALSE, col=col, scale="none", labRow=NA, ...)	
+	}
+  @
+  <<warning=FALSE>>=
+  seq.heatmap(seq,seq.agnes,labCol=14:50)	
+  @
+\end{astuce}
+
+\clearpage
 La distance moyenne des séquences d'une classe au centre de cette classe, obtenue
 avec \rfunc{disscenter}, permet de mesurer plus précisément l'homogénéité des classes~:
 
