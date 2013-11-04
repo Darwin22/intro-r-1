@@ -133,10 +133,9 @@
 \setlength\marginparwidth{40pt}
 %\setcounter{tocdepth}{2}
 
-\title{\Huge{Introduction à \includegraphics[width=1.4cm]{img/Rlogo.jpg}}}
-\author{Julien Barnier\\ Centre Max Weber\\
-  CNRS -- UMR 5283\\ \href{mailto:julien.barnier@ens-lyon.fr}{\texttt{julien.barnier@ens-lyon.fr}}}
-\date{Version 2.0\\\today{}\\\vspace{3cm}\includegraphics[width=9cm]{img/xkcd_tech_chart.png}\\\footnotesize\texttt{http://xkcd.com/627/}}
+\title{\Huge{Introduction à l'analyse d'enquêtes avec \includegraphics[width=1.4cm]{img/Rlogo.jpg}}}
+\author{à partir d'un document original de\\ Julien Barnier\\ \href{mailto:julien.barnier@ens-lyon.fr}{\texttt{julien.barnier@ens-lyon.fr}}\\ \\ complété par \\ Joseph Larmarange\\ \href{mailto:joseph.larmarange@ceped.org}{\texttt{joseph.larmarange@ceped.org}}}
+\date{\today{}\\\vspace{3cm}\includegraphics[width=9cm]{img/xkcd_tech_chart.png}\\\footnotesize\texttt{http://xkcd.com/627/}}
 
 
 \begin{document}
@@ -196,12 +195,14 @@ du logiciel libre de traitement de données et d'analyse statistiques \R.
 Il se veut le plus accessible possible, y compris pour ceux qui ne
 sont pas particulièrement familiers avec l'informatique.
 
-Ce document est basé sur \Sexpr{R.Version()[["version.string"]]}.
+Ce document a été réalisé avec \Sexpr{R.Version()[["version.string"]]}.
 
-La page Web <<~officielle~>> sur laquelle on pourra trouver la
-dernière version de ce document se trouve à l'adresse~:
+Ce document est basé sur l'\textit{Introduction à \R} écrite par Julien Barnier
+et accessible sur \url{http://alea.fr.eu.org/pages/intro-R}. Il a été complété 
+de plusieurs chapitres par Joseph Larmarange. Cette version modifiée est
+téléchargeable à l'adresse~:
 
-\url{http://alea.fr.eu.org/pages/intro-R}
+\url{https://github.com/larmarange/intro-r/blob/CoursM2/intro.pdf?raw=true}
 
 \section{Licence}
 
@@ -217,10 +218,15 @@ Ce document est diffusé sous licence \textit{Creative Commons
 
 \section{Remerciements}
 
-L'auteur tient à remercier Mayeul Kauffmann, Julien Biaudet, Frédérique
+Julien Barnier tient à remercier Mayeul Kauffmann, Julien Biaudet, Frédérique
 Giraud, Joël Gombin et Joseph Larmarange pour leurs corrections et
 suggestions. Et un remerciement plus particulier à Milan Bouchet-Valat pour sa
 relecture très attentive et ses nombreuses et judicieuses remarques.
+
+Joseph Larmarange tient à remercier Julien Barnier pour avoir mis son travail
+sous licence \textit{Creative Commons} et Nicolas Robette pour avoir autorisé
+la reproduction de son introduction à l'analyse de séquences (chapitre 
+\ref{chapitre_sequences} \vpageref{chapitre_sequences}).
 
 
 \section{Conventions typographiques}

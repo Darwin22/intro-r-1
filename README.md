@@ -1,8 +1,10 @@
-Ce dépôt contient les sources et le PDF du document *Introduction à R*.
+Ce dépôt contient les sources et le PDF du document *Introduction à l'analyse d'enquêtes avec R*.
+
+C'est une adaptation de l'*Introduction à R* de Julien Barnier, disponible sur https://github.com/juba/intro-r
 
 Pour faire un lien direct vers le PDF, utilisez l'url suivante :
 
-https://github.com/juba/intro-r/blob/master/intro.pdf?raw=true
+https://github.com/larmarange/intro-r/blob/CoursM2/intro.pdf?raw=true
 
 ### Compilation
 
