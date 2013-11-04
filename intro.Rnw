@@ -5116,10 +5116,10 @@ par zone d'enquête est tiré au sort de manière alétoire simple.
 La fonction \rfunc{svydesign} accepte plusieus arguments décrits sur sa page d'aide
 (obtenue avec la commande \texttt{?svydesign}).
 
-L’agument \texttt{data} permet de spécifier le tableau de données contenant les observations.
+L'agument \texttt{data} permet de spécifier le tableau de données contenant les observations.
 
-L’argument \texttt{ids} est obligatoire et spécifie sous la forme d’une formule les 
-identifiants des différents niveaux d’un tirage en grappe. S’il s’agit d’un échantillon
+L'argument \texttt{ids} est obligatoire et spécifie sous la forme d'une formule les 
+identifiants des différents niveaux d'un tirage en grappe. S'il s'agit d'un échantillon
 aléatoire simple, on entrera \texttt{ids=\~{}1}. Autre situation~: supposons une étude portant
 sur la population française. Dans un premier temps, on a tiré au sort un certain nombre de 
 départements français. Dans un second temps, on tire au sort dans chaque département des 
@@ -5128,25 +5128,25 @@ interroge de manière exhaustive toutes les personnes habitant les quartiers enq
 fichier de données devra donc comporter pour chaque observation les variables 
 \texttt{id\textunderscore{}departement}, \texttt{id\textunderscore{}commune} et 
 \texttt{id\textunderscore{}quartier}. On écrira alors pour 
-l’argument \texttt{ids} la valeur suivante~: 
+l'argument \texttt{ids} la valeur suivante~: 
 \texttt{ids=\~{}id\textunderscore{}departement+id\textunderscore{}commune+id\textunderscore{}quartier}.
 
-Si l’échantillon est stratifié, on spécifiera les strates à l’aide de l’argument 
-\texttt{strata} en spécifiant la variable contenant l’identifiant des strates. Par 
+Si l'échantillon est stratifié, on spécifiera les strates à l'aide de l'argument 
+\texttt{strata} en spécifiant la variable contenant l'identifiant des strates. Par 
 exemple~: \texttt{strata=\~{}id\textunderscore{}strate}.
 
 Il faut encore spécifier les probabilités de tirage de chaque cluster ou bien 
-la pondération des individus. Si l’on dispose de la probabilité de chaque 
-observation d’être sélectionnée, on utilisera l’argument \texttt{probs}. Si,
+la pondération des individus. Si l'on dispose de la probabilité de chaque 
+observation d'être sélectionnée, on utilisera l'argument \texttt{probs}. Si,
 par contre, on connaît la pondération de chaque observation (qui doit être 
-proportionnelle à l’inverse de cette probabilité), on utilisera l’argument 
+proportionnelle à l'inverse de cette probabilité), on utilisera l'argument 
 \texttt{weights}.
 
-Si l’échantillon est stratifié, qu’au sein de chaque strate les individus ont été
-tirés au sort de manière aléatoire et que l’on connaît la taille de chaque strate,
+Si l'échantillon est stratifié, qu'au sein de chaque strate les individus ont été
+tirés au sort de manière aléatoire et que l'on connaît la taille de chaque strate,
 il est possible de ne pas avoir à spécifier la probabilité de tirage ou la 
 pondération de chaque observation. Il est préférable de fournir une variable 
-contenant la taille de chaque strate à l’argument \texttt{fpc}. De plus, dans 
+contenant la taille de chaque strate à l'argument \texttt{fpc}. De plus, dans 
 ce cas-là, une petite correction sera appliquée au modèle pour prendre en compte
 la taille finie de chaque strate.
 
@@ -5207,8 +5207,8 @@ design.eds <- svydesign(ids=~V021, data=eds, strata=~strate, weights=~poids)
 
 \subsection{Extraire un sous-échantillon}
 
-Si l’on souhaite travailler sur un sous-échantillon tout en gardant les 
-informations d’échantillonnage, on utilisera la fonction \rfunc{subset} présentée
+Si l'on souhaite travailler sur un sous-échantillon tout en gardant les 
+informations d'échantillonnage, on utilisera la fonction \rfunc{subset} présentée
 en détail section \ref{subset} \vpageref{subset}.
 
 <<>>=
@@ -5300,8 +5300,8 @@ pourra se concentrer sur ses premiers axes qui constitueront un bon résumé des
 variations observables dans l'échantillon.
 
 Avant toute ACM, il est indispensable de réaliser une analyse préliminaire de chaque variable,
-afin de voir si toutes les classes sont aussi bien représentées ou s’il existe un
-déséquilibre. L’ACM est sensible aux effectifs faibles, aussi regrouper les classes
+afin de voir si toutes les classes sont aussi bien représentées ou s'il existe un
+déséquilibre. L'ACM est sensible aux effectifs faibles, aussi regrouper les classes
 quand cela est nécessaire.
 
 \section{ACM avec \textsf{ade4}}
@@ -5421,10 +5421,10 @@ boxplot(acm, 2)
 \end{figure}
 
 Le tableau \texttt{acm\$cr} contient les rapports de corrélation (variant de 0 à 1)
-entre les variables et les axes choisis au départ de l’ACM. Pour représenter graphiquement
+entre les variables et les axes choisis au départ de l'ACM. Pour représenter graphiquement
 ces rapports, utiliser \texttt{barplot(acm\$cr[,num],names.arg=row.names(
-acm\$cr),las=2)} où \texttt{num} est le numéro de l’axe à représenter (voir figure
-\ref{fig_rapports_corr} \vpageref{fig_rapports_corr}). Pour l’interprétation des 
+acm\$cr),las=2)} où \texttt{num} est le numéro de l'axe à représenter (voir figure
+\ref{fig_rapports_corr} \vpageref{fig_rapports_corr}). Pour l'interprétation des 
 axes, se concentrer sur les variables les plus structurantes,
 c'est-à-dire dont le rapport de corrélation est le plus proche de 1.
 
@@ -5477,13 +5477,13 @@ chaque observation par un symbole qui peut être spécifié avec \texttt{pch} (p
 les différentes valeurs possibles, voir la figure \ref{fig_pch} \vpageref{fig_pch}).
 
 \begin{astuce}
-  Lorsque l’on réalise une ACM, il n’est pas rare que plusieurs observations 
-  soient identiques, c’est-à-dire correspondent à la même combinaison de modalités.
+  Lorsque l'on réalise une ACM, il n'est pas rare que plusieurs observations 
+  soient identiques, c'est-à-dire correspondent à la même combinaison de modalités.
   Dès lors, ces observations seront projetées sur le même point dans le plan factoriel.
   Une représentation classique des observations avec \rfunc{s.label} ne permettra 
   pas de rendre des effectifs de chaque point. Vous trouverez à cette adresse 
   (\url{http://joseph.larmarange.net/?article147}) une petite fonction \rfunc{s.freq}
-  représentant chaque point par un carré proportionnel au nombre d’individus.
+  représentant chaque point par un carré proportionnel au nombre d'individus.
 \end{astuce}
 
 \begin{astuce}
@@ -5507,7 +5507,7 @@ s.value(acm$li, acm$li[,3], 1, 2, csi=0.5)
 \end{figure}
 
 \rfunc{s.arrow} permet de représenter les vecteurs variables ou les vecteurs 
-individus sous la forme d’une flèche allant de l’origine du plan factoriel 
+individus sous la forme d'une flèche allant de l'origine du plan factoriel 
 aux coordonnées des variables/individus (voir figure \ref{fig_acm_sarrow}
 \vpageref{fig_acm_sarrow}).
 
@@ -5520,7 +5520,7 @@ s.arrow(acm$co, clabel=0.7)
 \end{figure}
 
 \rfunc{s.hist} permet de représenter des individus (ou des modalités) sur le plan
-factoriel et d’afficher leur distribution sur chaque axe (figure \ref{fig_acm_shist} 
+factoriel et d'afficher leur distribution sur chaque axe (figure \ref{fig_acm_shist} 
 \vpageref{fig_acm_shist}).
 
 \begin{figure}
@@ -5732,6 +5732,7 @@ dimdesc(acm2, axes=1:2)
 
 
 \chapter{Classification ascendante hiérarchique (CAH)}
+\label{chapitre_cah}
 
 Il existe de nombreuses techniques statistiques visant à partinionner une population
 en différentes classes ou sous-groupes. La \textit{classification ascendante 
@@ -5786,17 +5787,17 @@ une distance entre séquences.
 
 \subsection{Distance de Gower}
 
-En 1971, Gower a proposé un indice de similarité qui porte son nom. L’objectif de 
+En 1971, Gower a proposé un indice de similarité qui porte son nom. L'objectif de 
 cet indice consiste à mesurer dans quelle mesure deux individus sont semblables. 
-L’indice de Gower varie entre 0 et 1. Si l’indice vaut 1, les deux individus sont 
-identiques. À l’opposé, s’il vaut 0, les deux individus considérés n’ont pas de 
-point commun. Si l’on note $S_{g}$ l’indice de similarité de Gower, la distance 
-de Gower $D_{g}$ s’obtient simplement de la manière suivante : $D_{g} = 1 – S_{g}$.
+L'indice de Gower varie entre 0 et 1. Si l'indice vaut 1, les deux individus sont 
+identiques. À l'opposé, s'il vaut 0, les deux individus considérés n'ont pas de 
+point commun. Si l'on note $S_{g}$ l'indice de similarité de Gower, la distance 
+de Gower $D_{g}$ s'obtient simplement de la manière suivante : $D_{g} = 1 – S_{g}$.
 Ainsi, la distance sera nulle entre deux individus identiques et elle sera égale 
-à 1 entre deux individus totalement différents. Cette distance s’obtient sous \R
+à 1 entre deux individus totalement différents. Cette distance s'obtient sous \R
 avec la fonction \rfunc{daisy} du package \textsf{cluster}.
 
-L’indice de similarité de Gower entre deux individus $x_{1}$ et $x_{2}$ se calcule
+L'indice de similarité de Gower entre deux individus $x_{1}$ et $x_{2}$ se calcule
 de la manière suivante~:
 
 \begin{equation}
@@ -5807,20 +5808,20 @@ S_{g}(x_{1},x_{2})=\frac{1}{p}\sum_{j=1}^{p}s_{12j}
 $p$ représente le nombre total de caractères (ou de variables) descriptifs utilisés
 pour comparer les deux individus. $s_{12j}$ représente la similarité partielle 
 entre les individus 1 et 2 concernant le descripteur $j$. Cette similarité partielle
-se calcule différemment s’il s’agit d’une variable qualitative ou quantitative~:
+se calcule différemment s'il s'agit d'une variable qualitative ou quantitative~:
 \begin{itemize}
 \item \textbf{variable qualitative~:} $s_{12j}$ vaut 1 si la variable $j$ prend 
 la même valeur pour les individus 1 et 2, et vaut 0 sinon. Par exemple, si 1 et 2
 sont tous les deux <<~grand~>>, alors $s_{12j}$ vaudra 1. Si 1 est <<~grand~>> 
 et 2 <<~petit~>>, $s_{12j}$ vaudra 0.
 \item \textbf{variable quantitative~:} la différence absolue entre les valeurs des deux 
-variables est tout d’abord calculée, soit $\left | y_{1j} - y_{2j} \right |$. 
-Puis l’écart maximum observé sur l’ensemble du fichier est déterminé et noté $R_{j}$. 
+variables est tout d'abord calculée, soit $\left | y_{1j} - y_{2j} \right |$. 
+Puis l'écart maximum observé sur l'ensemble du fichier est déterminé et noté $R_{j}$. 
 Dès lors, la similarité partielle vaut $S_{12j}=\left | y_{1j} - y_{2j} \right |/R_{j}$.
 \end{itemize}
 
 \noindent
-Dans le cas où l’on n’a que des variables qualitatives, la valeur de l’indice de 
+Dans le cas où l'on n'a que des variables qualitatives, la valeur de l'indice de 
 Gower correspond à la proportion de caractères en commun. Supposons des 
 individus 1 et 2 décris ainsi~:
 \begin{enumerate}
@@ -5830,45 +5831,45 @@ individus 1 et 2 décris ainsi~:
 
 \noindent
 Sur les 5 variables utilisées pour les décrire, 1 et 2 ont deux caractéristiques 
-communes~: ils sont grand(e)s et étudiant(e)s. Dès lors, l’indice de similarité 
+communes~: ils sont grand(e)s et étudiant(e)s. Dès lors, l'indice de similarité 
 de Gower entre 1 et 2 vaut $2/5=0,4$ (soit une distance de $1-0,4=0,6$).
 
 \noindent
 Plusieurs approches peuvent être retenues pour traiter les valeurs manquantes~:
 \begin{itemize}
-\item supprimer tout individu n’étant pas renseigné pour toutes les variables de l’analyse~;
+\item supprimer tout individu n'étant pas renseigné pour toutes les variables de l'analyse~;
 \item considérer les valeurs manquantes comme une modalité en tant que telle~;
 \item garder les valeurs manquantes en tant que valeurs manquantes.
 \end{itemize}
 
 \noindent
-Le choix retenu modifiera les distances de Gower calculées. Supposons que l’on ait~:
+Le choix retenu modifiera les distances de Gower calculées. Supposons que l'on ait~:
 \begin{enumerate}
 \item homme / grand / blond / étudiant / urbain
 \item femme / grande / brune / étudiante / \textit{manquant}
 \end{enumerate}
 
 \noindent
-Si l’on supprime individus ayant des valeurs manquantes, 2 est retirée du fichier 
-d’observations et aucune distance n’est calculée. 
-Si l’on traite les valeurs manquantes comme une modalité particulière, 1 et 2 
+Si l'on supprime individus ayant des valeurs manquantes, 2 est retirée du fichier 
+d'observations et aucune distance n'est calculée. 
+Si l'on traite les valeurs manquantes comme une modalité particulière, 1 et 2 
 partagent alors 2 caractères sur les 5 analysés, la distance de Gower entre eux 
 est alors de $1-2/5=1-0,4=0,6$.
-Si on garde les valeurs manquantes, l’indice de Gower est dès lors calculé sur 
+Si on garde les valeurs manquantes, l'indice de Gower est dès lors calculé sur 
 les seuls descripteurs renseignés à la fois pour 1 et 2. La distance de Gower 
 sera calculée dans le cas présent uniquement sur les 4 caractères renseignés et 
 vaudra $1-2/4=0,5$.
 
 \subsection{Distance du $\Phi^2$}
 
-Il s’agit de la distance utilisée dans les analyses de correspondance multiples (ACM).
+Il s'agit de la distance utilisée dans les analyses de correspondance multiples (ACM).
 C'est une variante de la distance du $\chi^2$.
 Nous considérons ici que nous avons $Q$ questions (soit $Q$ variables initiales 
-de type facteur). À chaque individu est associé un \textit{patron} c’est-à-dire 
+de type facteur). À chaque individu est associé un \textit{patron} c'est-à-dire 
 une certaine combinaison de réponses aux $Q$ questions. La distance entre deux 
 individus  correspond à la distance entre leurs deux patrons. Si les deux 
 individus présentent le même patron, leur distance sera nulle. La distance du 
-$\Phi^2$ peut s’exprimer ainsi~:
+$\Phi^2$ peut s'exprimer ainsi~:
 
 \begin{equation}
 d_{\Phi^2}^2(L_i,L_j)=\frac{1}{Q}\sum_{k}\frac{(\delta_{ik}-\delta_{jk})^2}{f_k}
@@ -5877,10 +5878,10 @@ d_{\Phi^2}^2(L_i,L_j)=\frac{1}{Q}\sum_{k}\frac{(\delta_{ik}-\delta_{jk})^2}{f_k}
 \noindent
 où $L_i$ et $L_j$ sont deux patrons, $Q$ le nombre total de questions. 
 $\delta_{ik}$ vaut 1 si la modalité $k$ est présente dans le patron $L_i$, 0 sinon. 
-$f_k$ est la fréquence de la modalité $k$ dans l’ensemble de la population.
+$f_k$ est la fréquence de la modalité $k$ dans l'ensemble de la population.
 
 \noindent
-Exprimé plus simplement, on fait la somme de l’inverse des modalités non communes
+Exprimé plus simplement, on fait la somme de l'inverse des modalités non communes
 aux deux patrons, puis on divise par le nombre total de question. Si nous reprenons
 notre exemple précédent~:
 \begin{enumerate}
@@ -5890,7 +5891,7 @@ notre exemple précédent~:
 
 \noindent
 Pour calculer la distance entre 1 et 2, il nous faut connaître la proportion des 
-différentes modalités dans l’ensemble de la population étudiée. En l’occurrence~:
+différentes modalités dans l'ensemble de la population étudiée. En l'occurrence~:
 \begin{itemize}
 \item hommes : 52~\% / femmes : 48~\%
 \item grand : 30~\% / moyen : 45~\% / petit : 25~\%
@@ -5912,7 +5913,7 @@ Cette distance, bien que moins intuitive que la distance de Gower évoquée
 précédemment, est la plus employée pour l'analyse d'enquêtes en sciences sociales. 
 Il faut retenir que la distance entre deux profils est dépendante de la 
 distribution globale de chaque modalité dans la population étudiée. Ainsi, si 
-l’on recalcule les distances entre individus à partir d’un sous-échantillon, 
+l'on recalcule les distances entre individus à partir d'un sous-échantillon, 
 le résultat obtenu sera différent. De manière générale, les individus présentant 
 des caractéristiques rares dans la population vont se retrouver éloignés des 
 individus présentant des caractéristiques fortement représentées.
@@ -5930,9 +5931,9 @@ md <- dist.dudi(acm)
 
 \section{Calcul du dendrogramme}
 
-Il faut ensuite choisir une méthode d’agrégation pour construire le dendrogramme.
+Il faut ensuite choisir une méthode d'agrégation pour construire le dendrogramme.
 De nombreuses solutions existent (saut minimum, distance maximum, moyenne, Ward...). 
-Chacune d’elle produira un dendrogramme différent. Nous ne détaillerons pas ici
+Chacune d'elle produira un dendrogramme différent. Nous ne détaillerons pas ici
 ces différentes techniques\footnote{On pourra consulter le cours de FG Carpentier
 déjà cité ou bien des ouvrages d'analyse statistique.}. Cependant, à l'usage, on
 privilégiera le plus souvent la \textit{méthode de Ward}. Cette méthode se 
@@ -5946,8 +5947,8 @@ et à maximiser l'inertie inter-classe afin d'obtenir des classes les plus
 homogènes possibles.
 
 En raison de la variété des distances possibles et de la variété des techniques 
-d’agrégation, on pourra être amené à réaliser plusieurs dendrogrammes différents 
-sur un même jeu de données jusqu’à obtenir une classification qui fait <<~sens~>>.
+d'agrégation, on pourra être amené à réaliser plusieurs dendrogrammes différents 
+sur un même jeu de données jusqu'à obtenir une classification qui fait <<~sens~>>.
 
 La fonction de base pour le calcul d'un dendrogramme est \rfunc{hclust} en précisant
 le critère d'aggrégation avec \texttt{method}. Dans notre cas, nous allons opter
@@ -6042,8 +6043,8 @@ rect.hclust(arbre, 8, border="blue3")
 \end{figure}
 
 L'extension \textsf{FactoMineR} (que nous aborderons dans la section 
-\ref{cah_factominer} \vpageref{cah_factominer}) suggère d’utiliser la partition 
-ayant la plus grande perte relative d’inertie. Nous avons développer une fonction
+\ref{cah_factominer} \vpageref{cah_factominer}) suggère d'utiliser la partition 
+ayant la plus grande perte relative d'inertie. Nous avons développer une fonction
 \rfunc{best.cutree} qui permet de calculer cette indicateur à partir de n'importe
 quel dendrogramme calculé avec \rfunc{hclust} ou \rfunc{agnes}. Le code de cette
 fonction est disponible à \url{http://joseph.larmarange.net/?article149}. Il suffit
@@ -6244,7 +6245,434 @@ freq(cah$data.clust$clust)
 \chapter{Analyse de séquences}
 \label{chapitre_sequences}
 
+\begin{important}
+  Le texte de ce chapitre reprend, avec l'aimable autorisation de son auteur,
+  un article de Nicolas Robette\footnote{
+    Maître de conférences à l'Université de Versailles Saint-Quentin-en-Yvelines.
+  } intitulé \textit{L'analyse de séquences~: une 
+  introduction avec le logiciel R et le package TraMineR} et publié le 24 octobre
+  2012 sur sur le blog Quanti\footnote{\url{http://quanti.hypotheses.org/686/}}.
+\end{important}
 
+Depuis les années 1980, l'étude quantitative des trajectoires biographiques 
+(\textit{life course analysis}) a pris une ampleur considérable dans le champ 
+des sciences sociales. Les collectes de données micro-individuelles longitudinales
+se sont développées, principalement sous la forme de panels ou d'enquêtes 
+rétrospectives. Parallèlement à cette multiplication des données disponibles,
+la méthodologie statistique a connu de profondes évolutions. L'analyse des 
+biographies (\textit{event history analysis}) --- qui ajoute une dimension 
+diachronique aux modèles économétriques \textit{mainstream} --- s'est rapidement 
+imposée comme l'approche dominante~: il s'agit de modéliser la durée des 
+situations ou le risque d'occurrence des événements.
+
+\section{L'analyse de séquences}
+
+Cependant, ces dernières années ont vu la diffusion d'un large corpus de méthodes
+descriptives d'analyse de séquences, au sein desquelles l'appariement optimal
+(\textit{optimal matching}) occupe une place centrale\footnote{
+  Pour une analyse des conditions sociales de la diffusion de l'analyse de séquences
+  dans le champ des sciences sociales, voir Robette, 2012.
+}. L'objectif principal de ces méthodes est d'identifier --- dans la diversité
+d'un corpus de séquences constituées de séries d'états successifs ---
+les régularités, les ressemblances, puis le plus souvent de construire des typologies
+de <<~séquences-types~>>. L'analyse de séquences constitue donc un moyen de décrire 
+mais aussi de mieux comprendre le déroulement de divers processus.
+
+La majeure partie des applications de l'analyse de séquences traite de trajectoires 
+biographiques ou de carrières professionnelles. Dans ces cas, chaque trajectoire
+ou chaque carrière est décrite par une séquence, autrement dit par une suite 
+chronologiquement ordonnée de <<~moments~>> élémentaires, chaque moment correspondant
+à un <<~état~>> déterminé de la trajectoire (par exemple, pour les carrières 
+professionnelles~: être en emploi, au chômage ou en inactivité). Mais on peut bien 
+sûr imaginer des types de séquences plus originaux~: Andrew Abbott\footnote{
+  \url{http://home.uchicago.edu/~aabbott/}
+}, le sociologue américain qui a introduit l'\textit{optimal matching} dans les 
+sciences sociales dans les années 1980, s'en est par exemple servi pour étudier 
+la structure rhétorique d'articles scientifiques ou des séquences de pas de danses 
+traditionnelles.
+
+En France, les premiers travaux utilisant l'appariement optimal sont ceux de 
+Claire Lemercier\footnote{
+  \url{http://lemercier.ouvaton.org/document.php?id=62}
+} sur les carrières des membres des institutions consulaires parisiennes au XIXe
+siècle (Lemercier, 2005), et de Laurent Lesnard\footnote{
+  \url{http://laurent.lesnard.free.fr/article.php3?id_article=22}
+} sur les emplois du temps (Lesnard, 2008). Mais dès les années 1980, les chercheurs 
+du Céreq construisaient des typologies de trajectoires d'insertion à l'aide des 
+méthodes d'analyse des données <<~à la française~>> (analyse des correspondances,
+etc.)\footnote{
+  Voir par exemple l'article d'Yvette Grelet (2002). 
+}. Au final, on dénombre maintenant plus d'une centaine d'articles de sciences 
+sociales contenant ou discutant des techniques empruntées à l'analyse de séquences.
+
+Pour une présentation des différentes méthodes d'analyse de séquences disponibles 
+et de leur mise en \oe{}uvre pratique, il existe un petit manuel en français, 
+publié l'année dernière aux éditions du Ceped (collection <<~Les clefs pour~>>\footnote{
+  \url{http://www.ceped.org/?Les-Clefs-pour}
+}) et disponible en pdf\footnote{
+  \url{http://nicolas.robette.free.fr/Docs/Robette2011_Manuel_TypoTraj.pdf}
+} (Robette, 2011). De plus, un article récemment publié dans le Bulletin de 
+Méthodologie Sociologique compare de manière systématique les résultats obtenus 
+par les principales méthodes d'analyse de séquences (Robette \& Bry, 2012). La
+conclusion en est qu'avec des données empiriques aussi structurées que celles que 
+l'on utilise en sciences sociales, l'approche est robuste, c'est-à-dire qu'un 
+changement de méthode aura peu d'influence sur les principaux résultats. Cependant,
+l'article tente aussi de décrire les spécificités de chaque méthode et les différences
+marginales qu'elles font apparaître, afin de permettre aux chercheurs de mieux 
+adapter leurs choix méthodologiques à leur question de recherche.
+
+Afin d'illustrer la démarche de l'analyse de séquences, nous allons procéder ici 
+à la description <<~pas à pas~>> d'un corpus de carrières professionnelles, issues
+de l'enquête \textit{Biographies et entourage} (INED, 2000)\footnote{
+  Pour une analyse plus poussée de ces données, avec deux méthodes différentes, 
+  voir Robette \& Thibault, 2008. Pour une présentation de l'enquête, voir 
+  Lelièvre \& Vivier, 2001.
+}. Et pour ce faire, on va utiliser le logiciel \R, qui propose la solution 
+actuellement la plus complète et la plus puissante en matière d'analyse de 
+séquences. Les méthodes d'analyse de séquences par analyses factorielles ou de 
+correspondances ne nécessitent pas de logiciel spécifique~: tous les logiciels 
+de statistiques généralistes peuvent être utilisés (\textsf{SAS}, \textsf{SPSS}, 
+\textsf{Stata}, \R, etc.). En revanche, il n'existe pas de fonctions pour 
+l'appariement optimal dans \textsf{SAS} ou \textsf{SPSS}. Certains logiciels 
+gratuits implémentent l'appariement optimal (comme \textsf{Chesa}\footnote{
+  \url{http://home.fsw.vu.nl/ch.elzinga/}
+} ou \textsf{TDA}\footnote{
+  \url{http://steinhaus.stat.ruhr-uni-bochum.de/tda.html}
+}) mais il faut alors recourir à d'autres programmes pour dérouler l'ensemble de 
+l'analyse (classification, représentation graphique). \textsf{Stata} propose le 
+module \textsf{sq}\footnote{
+  \url{http://www.stata-journal.com/article.html?article=st0111}
+}, qui dispose d'un éventail de fonctions intéressantes. Mais c'est \R et le 
+package \textsf{TraMineR}\footnote{
+  \url{http://mephisto.unige.ch/traminer/}
+}, développé par des collègues de l'Université de Genève (Gabadinho \textit{et al},
+2011), qui fournit la solution la plus complète et la plus puissante à ce jour~:
+on y trouve l'appariement optimal mais aussi d'autres algorithmes alternatifs, 
+ainsi que de nombreuses fonctions de description des séquences et de représentation
+graphique.
+
+\section{Installer \textsf{TraMineR} et récupérer les données}
+
+Tout d'abord, à quoi ressemblent nos données~? On a reconstruit à partir de 
+l'enquête les carrières de 1000 hommes. Pour chacune, on connaît la position 
+professionnelle chaque année, de l'âge de 14 ans jusqu'à 50 ans. Cette position 
+est codée de la manière suivante~: les codes 1 à 6 correspondent aux groupes 
+socioprofessionnels de la nomenclature des PCS de l'INSEE\footnote{
+  \url{http://www.insee.fr/fr/methodes/default.asp?page=nomenclatures/pcs2003/pcs2003.htm}
+} (agriculteurs exploitants~; artisans, commerçants et chefs d'entreprise~; cadres
+et professions intellectuelles supérieures~; professions intermédiaires~;  employés~;
+ouvriers)~; on y a ajouté <<~études~>> (code 7), <<~inactivité~> (code 8) et 
+<<~service militaire~>> (code 9). Le fichier de données comporte une ligne par individu
+et une colonne par année~: la variable 1 correspond à la position à 14 ans, 
+la variable 2 à la position à 15 ans, etc. Par ailleurs, les enquêtés étant 
+tous nés entre 1930 et 1950, on ajoute à notre base une variable <<~génération~>>
+à trois modalités, prenant les valeurs suivantes~: 1=1930-1938~; 2=1939-1945~;
+3=1946-1950. Au final, la base est constituée de 500 lignes et de 37+1=38 colonnes
+et se présente sous la forme d'un fichier texte au format \texttt{csv} (téléchargeable à 
+\url{http://nicolas.robette.free.fr/Docs/trajpro.csv}).
+
+Une fois \R ouvert, on commence par installer les extensions nécessaires à ce 
+programme (opération à ne réaliser que lors de leur première utilisation) et par 
+les charger en mémoire. L'extension \textsf{TraMineR} propose de nombreuses 
+fonctions pour l'analyse de séquences. L'extension \textsf{cluster} comprend un 
+certain nombre de méthodes de classification automatique\footnote{
+  Pour une présentation plus détaillée de la classification ascendante hiérarchique,
+  voir le chapitre \ref{chapitre_cah} \vpageref{chapitre_cah}.
+}.
+
+<<eval=FALSE>>=
+install.packages(c('TraMineR'))
+@
+
+<<message=FALSE>>=
+library(TraMineR)
+library(cluster)
+@
+
+On importe ensuite les données, on recode la variable <<~génération~>> pour lui 
+donner des labels plus explicites. On jette également un coup d'\oe{}il à la 
+structure du tableau de données~:
+
+<<echo=FALSE>>=
+donnees<-read.csv("trajpro.csv",header=T)
+@
+<<eval=FALSE>>=
+donnees<-read.csv("http://nicolas.robette.free.fr/Docs/trajpro.csv",header=T)
+@
+<<>>=
+donnees$generation <- factor(donnees$generation,labels=c('1930-38', '1939-45', '1946-50'))
+str(donnees)
+@
+
+On a bien 1000 observations et 38 variables. On définit maintenant des labels 
+pour les différents états qui composent les séquences et on crée un objet 
+<<~séquence~>> avec \rfunc{seqdef}~:
+
+% On déscative les messages car TraMineR produit un caractère >
+% qui pose souci quand on génère le PDF
+<<message=FALSE>>=
+labels <- c("agric","acce","cadr","pint","empl","ouvr","etud","inact","smil")
+seq <- seqdef(donnees[,1:37], states=labels)
+@
+
+\section{Appariement optimal et classification}
+
+Ces étapes préalables achevées, on peut comparer les séquences en calculant 
+les dissimilarités entre paires de séquences. On va ici utiliser la méthode la
+plus répandue, l'appariement optimal (\textit{optimal matching}). Cette méthode
+consiste, pour chaque paire de séquences, à compter le nombre minimal de modifications
+(substitutions, suppressions, insertions) qu'il faut faire subir à l'une des 
+séquences pour obtenir l'autre. On peut considérer que chaque modification 
+est équivalente, mais il est aussi possible de prendre en compte le fait que les 
+<<~distances~>> entre les différents états n'ont pas toutes la même <<~valeur~>>
+(par exemple, la distance sociale entre emploi à temps plein et chômage est 
+plus grande qu'entre emploi à temps plein et emploi à temps partiel), en 
+assignant aux différentes modifications des <<~coûts~>> distincts. Dans notre 
+exemple, on va créer avec \rfunc{seqsubm} une <<~matrice des coûts de substitution~>>
+dans laquelle tous les coûts sont constants et égaux à 2\footnote{
+  Le fonctionnement de l’algorithme d’appariement optimal --- et notamment le 
+  choix des coûts --- est décrit dans le chapitre 3 du manuel de \textsf{TraMineR}.
+}~:
+
+<<message=FALSE>>=
+  couts <- seqsubm(seq,method="CONSTANT", cval=2)
+@
+
+
+Ensuite, on calcule la matrice de distance entre les séquences (i.e contenant 
+les <<~dissimilarités~>> entre les séquences) avec \rfunc{seqdist}, avec un 
+coût d'insertion/suppression (\textit{indel})  que l'on fixe ici à 1,1~:
+
+<<message=FALSE>>=
+seq.om <- seqdist(seq, method="OM", indel=1.1, sm=couts)
+@
+
+Cette matrice des distances ou des dissimilarités entre séquences peut ensuite 
+être utilisée pour une classification ascendante hiérarchique (CAH), qui permet 
+de regrouper les séquences en un certain nombre de <<~classes~>> en fonction de 
+leur proximité~:
+
+<<>>=
+seq.agnes <- agnes(as.dist(seq.om), method="ward", keep.diss=FALSE)
+@
+
+\begin{figure}
+<<>>=
+plot(as.dendrogram(seq.agnes), leaflab="none")
+@
+\caption{Dendrogramme de la classification des séquences}
+\label{fig_dendrogramme_seq}
+\end{figure}
+
+\begin{figure}
+<<>>=
+plot(sort(seq.agnes$height, decreasing=TRUE)[1:20], type="s", xlab="nb de classes", ylab="inertie")
+@
+\caption{Sauts d'inertie de la classification des séquences}
+\label{fig_sauts_inertie_seq}
+\end{figure}
+
+Avec la fonction \rfunc{plot}, il est possible de tracer l'arbre de la 
+classification (dendrogramme). L'observation, sur ce dendogramme (figure 
+\ref{fig_dendrogramme_seq} \vpageref{fig_dendrogramme_seq}) ou sur la courbe des 
+sauts d'inertie (figure \ref{fig_sauts_inertie_seq} \vpageref{fig_sauts_inertie_seq}), 
+des sauts d'inertie des dernières étapes de la classification peut servir de guide
+pour déterminer le nombre de classes que l'on va retenir pour la suite des analyses.
+Une première inflexion dans la courbe des sauts d'inertie apparaît au niveau d'une 
+partition en 5 classes. On voit aussi une seconde inflexion assez nette à 7 classes.
+Mais il faut garder en tête le fait que ces outils ne sont que des guides, le 
+choix devant avant tout se faire après différents essais, en fonction de l'intérêt 
+des résultats par rapport à la question de recherche et en arbitrant entre 
+exhaustivité et parcimonie.
+
+On fait ici le choix d'une partition en 5 classes~:
+
+<<>>=
+nbcl <- 5
+seq.part <- cutree(seq.agnes, nbcl)
+seq.part <- factor(seq.part,labels=paste('classe',1:nbcl,sep='.'))
+@
+
+\section{Représentations graphiques}
+
+Pour se faire une première idée de la nature des classes de la typologie, il 
+existe un certain nombre de représentations graphiques. Les chronogrammes 
+(\textit{state distribution plots}) présentent une série de coupes transversales~:
+pour chaque âge, on a les proportions d'individus de la classe dans les 
+différentes situations (agriculteur, étudiant, etc.). Ce graphique s'obtient
+avec \rfunc{seqdplot} (voir figure \ref{fig_seqdplot} \pageref{fig_seqdplot})
+
+\begin{figure}
+<<>>=
+seqdplot(seq, group=seq.part, xtlab=14:50, border=NA, withlegend=T)
+@
+\caption{Chronogrammes}
+\label{fig_seqdplot}
+\end{figure}
+
+
+Chacune des classes semble caractérisée par un groupe professionnel principal~:
+profession intermédiaire pour la classe 1, ouvrier pour la 2, employé pour la 3,
+cadre pour la 4 et indépendant pour la 5. Cependant, on aperçoit aussi des 
+<<~couches~>> d'autres couleurs, indiquant que l'ensemble des carrières ne sont 
+probablement pas stables.
+
+Les <<~tapis~> (\textit{index plots}), obtenus avec \rfunc{seqiplot},
+permettent de mieux visualiser la dimension
+individuelle des séquences. Chaque segment horizontal représente une séquence, 
+découpée en sous-segments correspondant aux aux différents états successifs qui 
+composent la séquence (voir figure \ref{fig_seqiplot} \vpageref{fig_seqiplot}).
+
+\begin{figure}
+<<>>=
+seqiplot(seq, group=seq.part, xtlab=14:50, tlim=0, space=0, border=NA, withlegend=T, yaxis=FALSE)
+@
+\caption{Tapis des séquences}
+\label{fig_seqiplot}
+\end{figure}
+
+Il est possible de trier les séquences pour rendre les tapis plus lisibles 
+(on trie ici par \textit{multidimensional scaling}, voir figure \ref{fig_seqiplot2}
+\vpageref{fig_seqiplot2}).
+
+\begin{figure}
+<<>>=
+ordre <- cmdscale(as.dist(seq.om),k=1)
+seqiplot(seq, group=seq.part, sortv=ordre, xtlab=14:50, tlim=0, space=0, border=NA, withlegend=T, yaxis=FALSE)
+@
+\caption{Tapis des squences triés par multidimensional scaling}
+\label{fig_seqiplot2}
+\end{figure}
+
+On voit mieux apparaître ainsi l'hétérogénéité de certaines classes. Les classes 
+1, 3 et 4, par exemple, semblent regrouper des carrières relativement stables 
+(respectivement de professions intermédiaires, d'employés et de cadres) et des 
+carrières plus <<~mobiles~>> commencées comme ouvrier (classes 1 et 3, en orange)
+ou comme profession intermédiaire (classe 4, en rouge). De même, la majorité des 
+membres de la dernière classe commencent leur carrière dans un groupe professionnel 
+distinct de celui qu'ils occuperont par la suite (indépendants). Ces distinctions 
+apparaissent d'ailleurs si on relance le programme avec un nombre plus élevé de classes 
+(en remplaçant le \texttt{5} de la ligne \texttt{nbcl <- 5} par \texttt{7}, 
+seconde inflexion de la courbe des sauts d'inertie, et en exécutant de nouveau 
+le programme à partir de cette ligne)~: les stables et les mobiles se trouvent 
+alors dans des classes distinctes.
+
+La distance moyenne des séquences d'une classe au centre de cette classe, obtenue
+avec \rfunc{disscenter}, permet de mesurer plus précisément l'homogénéité des classes~:
+
+<<>>=
+round(aggregate(disscenter(as.dist(seq.om), group=seq.part), list(seq.part), mean)[,-1],1)
+@
+
+Cela nous confirme que les classes 1, 3 et 5 sont nettement plus hétérogènes que 
+les autres, alors qua la classe 2 est la plus homogène.
+
+D'autres représentations graphiques existent pour poursuivre l'examen de la typologie. 
+On peut visualiser les 10 séquences les plus fréquentes de chaque classe avec 
+\rfunc{seqfplot} (figure \ref{fig_seqfplot} \vpageref{fig_seqfplot}).
+
+\begin{figure}
+<<>>=
+seqfplot(seq, group=seq.part, withlegend=T)
+@
+\caption{Séquences les plus fréquentes de chaque classe}
+\label{fig_seqfplot}
+\end{figure}
+
+
+On peut aussi visualiser avec \rfunc{seqmsplot} l'état modal (celui qui 
+correspond au plus grand nombre de séquences de la classe) à chaque âge 
+(figure \ref{fig_seqmsplot} \vpageref{fig_seqmsplot}).
+
+\begin{figure}
+<<>>=
+seqmsplot(seq, group=seq.part, xtlab=14:50, withlegend=T, title="classe")
+@
+\caption{Statut modal à chaque âge}
+\label{fig_seqmsplot}
+\end{figure}
+
+On peut également représenter avec \rfunc{seqmtplot} les durées moyennes 
+passées dans les différents états (figure \ref{fig_seqmtplot} \vpageref{fig_seqmtplot}).
+
+\begin{figure}
+<<>>=
+seqmtplot(seq, group=seq.part, withlegend=T)
+@
+\caption{Durée moyenne dans chaque statut}
+\label{fig_seqmtplot}
+\end{figure}
+
+Enfin, l'entropie transversale décrit l'évolution de l'homogénéité de la classe. 
+Pour un âge donné, une entropie proche de 0 signifie que tous les individus de 
+la classe (ou presque) sont dans la même situation. À l'inverse, l'entropie est 
+de 1 si les individus sont dispersés dans toutes les situations. Ce type de 
+graphique prduit par \rfunc{seqHtplot} peut être pratique pour localiser les 
+moments de transition, l'insertion professionnelle ou une mobilité sociale 
+ascendante (voir par exemple la figure \ref{fig_seqHtplot} \vpageref{fig_seqHtplot}).
+
+\begin{figure}
+<<>>=
+seqHtplot(seq, group=seq.part, xtlab=14:50, withlegend=T)
+@
+\caption{Entropie transversale}
+\label{fig_seqHtplot}
+\end{figure}
+
+On souhaite maintenant connaître la distribution de la typologie 
+(en effectifs et en pourcentages)~:
+
+<<>>=
+freq(seq.part)
+@
+
+On poursuit ensuite la description des classes en croisant la typologie avec 
+la variable \texttt{generation}~:
+
+<<>>=
+cprop(table(seq.part,donnees$generation))
+chisq.test(table(seq.part,donnees$generation))
+@
+
+Le lien entre le fait d'avoir un certain type de carrières et la cohorte de 
+naissance est significatif à un seuil de 15~\%. On constate par exemple 
+l'augmentation continue de la proportion de carrières de type <<~professions 
+intermédiaires~>> (classe 1) et, entre les deux cohortes les plus anciennes, 
+l'augmentation de la part des carrières de type <<~employés~>> (classe 3) et 
+la baisse de la part des carrières de type <<~cadres~>> (classe 4).
+
+Bien d'autres analyses sont envisageables~: croiser la typologie avec d'autres 
+variables (origine sociale, etc.), construire l'espace des carrières possibles, 
+étudier les interactions entre trajectoires familiales et professionnelles, 
+analyser la variance des dissimilarités entre séquences en fonction de plusieurs 
+variables <<~explicatives~>>\footnote{
+  L’articulation entre méthodes <<~descriptives~>> et méthodes « explicatives » 
+  est un prolongement possible de l’analyse de séquences. Cependant, l’analyse 
+  de séquences était envisagée par Abbott comme une alternative à la sociologie 
+  quantitative \textit{mainstream}, i.e le <<~paradigme des variables~>> et ses hypothèses 
+  implicites souvent difficilement tenables (Abbott, 2001). Une bonne description
+  solidement fondée théoriquement vaut bien des <<~modèles explicatifs~>> (Savage, 2009).
+}... Mais l'exemple proposé est sans doute bien suffisant pour une première 
+introduction~!
+
+\section{Bibliographie}
+
+\begin{itemize}
+\item Abbott A., 2001, \textit{Time matters. On theory and method}, The University of Chicago Press.
+\item Abbott A., Hrycak A., 1990, « Measuring ressemblance in sequence data : an optimal matching analysis of musicians' careers », \text{American journal of sociology}, (96), p.144-185. \url{http://www.jstor.org/stable/10.2307/2780695}
+\item Abbott A., Tsay A., 2000, « Sequence analysis and optimal matching methods in sociology: Review and prospect », \textit{Sociological methods \& research}, 29(1), p.3-33. \url{http://smr.sagepub.com/content/29/1/3.short}
+\item Gabadinho, A., Ritschard, G., Müller, N.S. \& Studer, M., 2011, « Analyzing and visualizing state sequences in R with TraMineR », \textit{Journal of Statistical Software}, 40(4), p.1-37. \url{http://archive-ouverte.unige.ch/downloader/vital/pdf/tmp/4hff8pe6uhukqiavvgaluqmjq2/out.pdf}
+\item Grelet Y., 2002, « Des typologies de parcours. Méthodes et usages », \textit{Document Génération} 92, (20), 47 p. \url{http://www.cmh.greco.ens.fr/programs/Grelet_typolparc.pdf}
+\item Lelièvre É., Vivier G., 2001, « Évaluation d'une collecte à la croisée du quantitatif et du qualitatif : l'enquête Biographies et entourage », \textit{Population}, (6), p.1043-1073. \url{http://www.persee.fr/web/revues/home/prescript/article/pop_0032-4663_2001_num_56_6_7217}
+\item Lemercier C., 2005, « Les carrières des membres des institutions consulaires parisiennes au XIXe siècle », \textit{Histoire et mesure}, XX (1-2), p.59-95. \url{http://histoiremesure.revues.org/786}
+\item Lesnard L., 2008, « Off-Scheduling within Dual-Earner Couples: An Unequal and Negative Externality for Family Time », \textit{American Journal of Sociology}, 114(2), p.447-490. \url{http://laurent.lesnard.free.fr/IMG/pdf/lesnard_2008_off-scheduling_within_dual-earner_couples-2.pdf}
+\item Lesnard L., Saint Pol T. (de), 2006, « Introduction aux Méthodes d'Appariement Optimal (Optimal Matching Analysis) », \textit{Bulletin de Méthodologie Sociologique}, 90, p.5-25. \url{http://bms.revues.org/index638.html}
+\item Robette N., 2011, \textit{Explorer et décrire les parcours de vie: les typologies de trajectoires}, CEPED (Les Clefs pour), 86 p. \url{http://nicolas.robette.free.fr/Docs/Robette2011_Manuel_TypoTraj.pdf}
+\item Robette N., 2012, « Du prosélytisme à la sécularisation. Le processus de diffusion de l'Optimal Matching Analysis », document de travail. \url{http://nicolas.robette.free.fr/Docs/Proselytisme_secularisation_NRobette.pdf}
+\item Robette N., Bry X., 2012, « Harpoon or bait? A comparison of various metrics to fish for life course patterns », \textit{Bulletin de Méthodologie Sociologique}, 116, p.5-24. \url{http://nicolas.robette.free.fr/Docs/Harpoon_maggot_RobetteBry.pdf}
+\item Robette N., Thibault N., 2008, « L'analyse exploratoire de trajectoires professionnelles: analyse harmonique qualitative ou appariement optimal? », \textit{Population}, 64(3), p.621-646. \url{http://www.cairn.info/revue-population-2008-4-p-621.htm}
+\item Savage M., 2009, « Contemporary Sociology and the Challenge of Descriptive Assemblage », \textit{European Journal of Social Theory}, 12(1), p.155-174. \url{http://est.sagepub.com/content/12/1/155.short}
+\end{itemize}
 
 
 \chapter{Exporter les résultats}
