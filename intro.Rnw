@@ -6714,6 +6714,19 @@ introduction~!
 \end{itemize}
 
 
+\chapter{Analyse de survie}
+
+L'anlyse de survie sous \R s'effectue principalement avec l'extension 
+\textsf{survival}. Nous n'aborderons pas l'analyse de survie ici. 
+Mais plusieurs ressources sont disponibles en ligne~:
+
+\begin{itemize}
+\item \url{http://www-irma.u-strasbg.fr/~geffray/cours/cours-nantes/M2polyR2008-2009.pdf}
+\item \url{http://www.mastergbi.fr/_media/members/slemler/courssurvie.pdf}
+\item \url{http://www.mastergbi.fr/_media/members/slemler/survie5.pdf}
+\item \url{http://ljk.imag.fr/membres/Anatoli.Iouditski/cours/M1MAI/dm_ch17.pdf}
+\end{itemize}
+
 \chapter{Exporter les résultats}
 
 Cette partie décrit comment, une fois les analyses réalisées, on peut
