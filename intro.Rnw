@@ -6040,7 +6040,13 @@ rect.hclust(arbre, 8, border="blue3")
 \label{fig_rect_hclust}
 \end{figure}
 
-
+L'extension \textsf{FactoMineR} (que nous aborderons dans la section 
+\ref{cah_factominer} \vpageref{cah_factominer}) suggère d’utiliser la partition 
+ayant la plus grande perte relative d’inertie. Nous avons développer une fonction
+\rfunc{best.cutree} qui permet de calculer cette indicateur à partir de n'importe
+quel dendrogramme calculé avec \rfunc{hclust} ou \rfunc{agnes}. Le code de cette
+fonction est disponible à \url{http://joseph.larmarange.net/?article149}. Il suffit
+de le recopier et de le coller dans \R~:
 
 <<>>=
 best.cutree <- function(hc, min=3, max=20, loss=FALSE, graph=FALSE, ...){
@@ -6066,24 +6072,79 @@ best.cutree <- function(hc, min=3, max=20, loss=FALSE, graph=FALSE, ...){
       best + min - 1
   }
 }
+
+best.cutree(arbre)
 @
 
+Par défaut, cette fonction regarde quelle serait la meilleure partition entre
+3 et 20 classes, en l'occurence il s'agirait d'une partition en 5 classes. Il
+est possible de modifier le minimum et le maximum des partitions recherchées
+avec \texttt{min} et \texttt{max}.
+
+<<>>=
+best.cutree(arbre, min=2)
+@
 
 \begin{figure}
 <<>>=
-best.cutree(arbre, min=2, graph=TRUE)
+best.cutree(arbre, min=2, graph=TRUE, xlab="Nombre de classes", ylab="Perte relative d'inertie")
 @
 \caption{Perte relative d'inertie selon le nombre de classes}
 \label{fig_bestcutree}
 \end{figure}
 
+On peut également représenter le graphique des pertes relatives d'inertie avec
+\texttt{graph=TRUE} (voir figure \ref{fig_bestcutree} \vpageref{fig_bestcutree}).
+La meilleure partition selon ce critère est représentée par un point noir et la
+seconde par un point gris. Un découpage en deux classes minimise ce critère. 
+Cependant, si l'on souhaite réaliser une analyse un peu plus fine, un nombre de 
+classes plus élevé serait pertinent. Nous allons donc retenir un découpage en
+cinq classes. Le découpage s'effectue avec la fonction \rfunc{cutree}.
+
+<<>>=
+dt$typo <- cutree(arbre, 5)
+freq(dt$typo)
+@
+
+La typologie obtenue peut être représentée dans le plan factoriel avec 
+\rfunc{s.class} (voir figure \ref{fig_sclass_cah} \vpageref{fig_sclass_cah}).
+
+\begin{figure}
+<<>>=
+par(mfrow=c(1,2))
+s.class(acm$li,as.factor(dt$typo), col=brewer.pal(5,"Set1"), sub="Axes 1 et 2")
+s.class(acm$li,as.factor(dt$typo), 3, 4, col=brewer.pal(5,"Set1"), sub="Axes 3 et 4")
+par(mfrow=c(1,1))
+@
+\caption{Projection de la typologie obtenue par CAH selon les 4 premiers axes}
+\label{fig_sclass_cah}
+\end{figure}
+
+Enfin, Romain François a developpé une fonction \rfunc{A2Rplot} permettant de 
+réaliser facilement un dendrogramme avec les branches colorées. En premier lieu,
+il faut récupérer le code de cette fonction~:
+
+<<eval=FALSE>>=
+source("http://addictedtor.free.fr/packages/A2R/lastVersion/R/code.R")
+@
+<<echo=FALSE>>=
+source("A2Rplot.r")
+@
+
+Puis réaliser le graphique en indiquant le nombre de classes et les 
+couleurs à utiliser pour chaque branche de l'arbre (voir figure \ref{fig_a2rplot}
+\vpageref{fig_a2rplot}).
 
 
-Découper avec cutree ou rect.hclust
-Quelles différences ?
-
-Un joli dendrogramme avec les branches colorées grace à A2Rplot.
-
+\begin{figure}
+<<>>=
+op = par(bg = "#EFEFEF")
+A2Rplot(arbre, k=5, boxes = FALSE, col.up = "gray50", col.down = brewer.pal(5,"Dark2"), show.labels=FALSE)
+par(op)
+@
+\caption{Un dendrogramme coloré}
+\label{fig_a2rplot}
+\end{figure}
 
 
 \section{CAH avec l'extension \textsf{FactoMineR}}
