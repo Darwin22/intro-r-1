@@ -5603,6 +5603,7 @@ scatter(acm, col=brewer.pal(4,"Set1"))
 \end{figure}
 
 \section{ACM avec \textsf{FactoMineR}}
+\label{acm_factominer}
 
 Comme avec \textsf{ade4}, il est nécessaire de préparer les données au préalable
 (voir section précédente). L'ACM se calcule avec la fonction \rfunc{MCA}, 
@@ -6102,8 +6103,8 @@ classes plus élevé serait pertinent. Nous allons donc retenir un découpage en
 cinq classes. Le découpage s'effectue avec la fonction \rfunc{cutree}.
 
 <<>>=
-dt$typo <- cutree(arbre, 5)
-freq(dt$typo)
+typo <- cutree(arbre, 5)
+freq(typo)
 @
 
 La typologie obtenue peut être représentée dans le plan factoriel avec 
@@ -6112,8 +6113,8 @@ La typologie obtenue peut être représentée dans le plan factoriel avec
 \begin{figure}
 <<>>=
 par(mfrow=c(1,2))
-s.class(acm$li,as.factor(dt$typo), col=brewer.pal(5,"Set1"), sub="Axes 1 et 2")
-s.class(acm$li,as.factor(dt$typo), 3, 4, col=brewer.pal(5,"Set1"), sub="Axes 3 et 4")
+s.class(acm$li,as.factor(typo), col=brewer.pal(5,"Set1"), sub="Axes 1 et 2")
+s.class(acm$li,as.factor(typo), 3, 4, col=brewer.pal(5,"Set1"), sub="Axes 3 et 4")
 par(mfrow=c(1,1))
 @
 \caption{Projection de la typologie obtenue par CAH selon les 4 premiers axes}
@@ -6150,8 +6151,94 @@ par(op)
 \section{CAH avec l'extension \textsf{FactoMineR}}
 \label{cah_factominer}
 
+L'extension \textsf{FactoMineR} fournit une fonction \rfunc{HCPC} permettant
+de réaliser une classification hiérarchique à partir du résultats d'une
+analyse factorielle réalisée avec la même extension (voir section
+\ref{acm_factominer} \vpageref{acm_factominer}). \rfunc{HCPC} réalise à la
+fois le calcul de la matrice des distances, du dendrogramme et le partitionnement
+de la population en classes. Par défaut, \rfunc{HCPC} calcule le dendrogramme
+à partir du carré des distances et avec la méthode de Ward. L'arbre est affiché
+à l'écran et vous pouvez indiquer où vous souhaitez le couper à la souris.
+Cependant, si vous utilisez \textsf{RStudio}, il y a un bug lié à cette 
+fonctationnalité. Vous devrez dès lors appeler \rfunc{HCPC} avec \texttt{graph=FALSE}.
+Utilisez l'argument \texttt{nb.clust} pour indiquer le nombre de classes désirées.
+Si vous appelez la fonction avec \texttt{nb.clust=-1}, l'arbre sera coupé selon 
+la partition ayant la plus grande perte relative d'inertie (comme avec \rfunc{best.cutree}).
 
-Fonction HCPC
+<<message=FALSE>>=
+cah <- HCPC(acm2, nb.clust=-1, graph=FALSE)
+@
+
+On pourra représenter le dendrogramme avec \rfunc{plot} et l'argument
+\texttt{choice="tree"} (voir figure \ref{fig_hcpc_tree} \vpageref{fig_hcpc_tree}).
+
+% NB : probleme avec plot.HCPC et knir
+% On insère manuellement
+\begin{figure}
+<<eval=FALSE>>=
+plot(cah, choice="tree")
+@
+\centering
+\includegraphics[width=12cm]{img/fig_hcpc_tree1.png}
+\caption{Dendrogramme obtenu avec \texttt{HCPC}}
+\label{fig_hcpc_tree}
+\end{figure}
+
+Il apparait que le dendrogramme obtenu avec \rfunc{HCPC} diffère de celui
+que nous avons calculé précédemment en utilisant la matrice des distances
+fournies par \rfunc{dist.dudi}. Cela est dû au fait que \rfunc{HCPC} procède
+différement pour calculer la matrice des distances en ne prenant en compte
+que les axes retenus dans le cadre de l'ACM. Pour rappel, nous avions retenu
+que 5 axes dans le cadre de notre ACM~:
+
+<<eval=FALSE>>=
+acm2 <- MCA(dt[complete.cases(dt),], ncp=5, graph=FALSE)
+@
+
+\rfunc{HCPC} n'a donc pris en compte que ces 5 premiers axes pour calculer les
+distances entre les individus, considérant que les autres axes n'apportent que
+du <<~bruit~>> rendant la classification instable. Cependant, comme le montre
+\texttt{summary(acm2)}, nos cinq premiers axes n'expliquent que 54~\% de la
+variance. Il usuellement préférable de garder un plus grande nombre d'axes afin 
+de couvrir au moins 80 à 90~\% de la variance\footnote{
+  Voir par exemple \url{http://factominer.free.fr/classical-methods/classification-hierarchique-sur-composantes-principales.html}
+}. De son côté, \rfunc{dist.dudi} prends en compte l'ensemble des axes pour 
+calculer la matrice des distances. On peut reproduire cela avec \textsf{FactoMineR}
+en indiquant \texttt{ncp=Inf} lors du calcul de l'ACM.
+
+<<>>=
+acm2 <- MCA(dt[complete.cases(dt),], ncp=Inf, graph=FALSE)
+cah <- HCPC(acm2, nb.clust=-1, graph=FALSE)
+@
+
+\begin{figure}
+<<eval=FALSE>>=
+plot(cah, choice="tree")
+@
+\centering
+\includegraphics[width=12cm]{img/fig_hcpc_tree2.png}
+\caption{Dendrogramme obtenu avec \texttt{HCPC}}
+\label{fig_hcpc_tree2}
+\end{figure}
+
+On obtient bien cette fois-ci le même résultat (voir figure \ref{fig_hcpc_tree2}
+\vpageref{fig_hcpc_tree2}). D'autres graphiques sont disponibles, essayez par
+exemple les commandes suivantes~:
+
+<<eval=FALSE>>=
+plot(cah, choice="3D.map")
+plot(cah, choice="bar")
+plot(cah, choice="map")
+@
+
+L'objet renvoyé par \rfunc{HCPC} contient de nombreuses informations. La partition
+peut notamment être récupérée avec \texttt{cah\$data.clust\$clust}. Il y a également
+diverses statistiques pour décrire les catégories.
+
+<<>>=
+cah
+freq(cah$data.clust$clust)
+@
 
 
 \chapter{Analyse de séquences}
