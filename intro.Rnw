@@ -7393,7 +7393,7 @@ help.search("logistic") # equivalent a ??logistic
 
 	
 \begin{rstudio}
-  Dans \textsd{RStudio}, les pages d'aide en ligne s'ouvriront dans le quadrant
+  Dans \textsf{RStudio}, les pages d'aide en ligne s'ouvriront dans le quadrant
   bas-droite sous l'onglet \textit{Help}. Un clic sur l'icône en forme de maison
   vous affichera la page d'accueil de l'aide.
 \end{rstudio}
