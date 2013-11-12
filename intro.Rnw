@@ -5276,6 +5276,13 @@ l'installer~:
 install.packages("ade4",dep=TRUE)
 @
 
+Dans tous les cas, il faut penser à la charger en mémoire~:
+
+<<message=FALSE>>=
+library(ade4)
+@
+
+
 Comme précédemment, nous utiliserons le fichier de données \texttt{hdv2003}
 fourni avec l'extension \textsf{questionr}.
 
@@ -5571,6 +5578,11 @@ scatter(acm, col=brewer.pal(4,"Set1"))
 Comme avec \textsf{ade4}, il est nécessaire de préparer les données au préalable
 (voir section précédente). L'ACM se calcule avec la fonction \rfunc{MCA}, 
 \texttt{ncp} permettant de choisir le nombre d'axes à retenir~:
+
+<<message=FALSE>>=
+library(FactoMineR)
+@
+
 
 <<>>=
 acm2 <- MCA(dt, ncp=5, graph=FALSE)
@@ -5888,6 +5900,7 @@ chapitre \ref{chapitre_acm}. La matrice des distances s'obtient dès lors avec
 la fonction \rfunc{dist.dudi}~:
 
 <<>>=
+library(ade4)
 md <- dist.dudi(acm)
 @
 
@@ -6130,6 +6143,7 @@ Si vous appelez la fonction avec \texttt{nb.clust=-1}, l'arbre sera coupé selon
 la partition ayant la plus grande perte relative d'inertie (comme avec \rfunc{best.cutree}).
 
 <<message=FALSE>>=
+library(FactoMineR)
 cah <- HCPC(acm2, nb.clust=-1, graph=FALSE)
 @
 
