@@ -4749,22 +4749,12 @@ regm2 <- step(regm)
 
 La plupart des fonctions vues précédemment fonctionnent\footnote{Voir 
 \url{http://www.ats.ucla.edu/stat/r/dae/mlogit.htm} (en anglais) pour plus de
-détails.}, de même que la représentation graphique des effets (figure 
-\ref{fig_alleffects_regm} \vpageref{fig_alleffects_regm}).
+détails.}.
 
 <<>>=
 summary(regm2)
 odds.ratio(regm2)
 @
-
-\begin{figure}
-<<>>=
-library(effects)
-plot(allEffects(regm2))
-@ 
-\caption{Représentation graphique de l'effet de chaque variable du modèle logistique}
-\label{fig_alleffects_regm}
-\end{figure}
 
 De même, il est possible de calculer la matrice de confusion~:
 
