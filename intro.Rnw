@@ -15,7 +15,7 @@
 \usepackage{verbatim}
 \usepackage{xspace}
 \usepackage{graphicx}
-\usepackage{picins}
+\usepackage{picinpar}
 \usepackage[sf,bf]{titlesec}
 \usepackage{listings}
 \usepackage{calc}
@@ -74,23 +74,31 @@
 
 \newenvironment{remarque}%
 {\begin{greyframe}%
-    \parpic[l]{\includegraphics[height=0.8cm,keepaspectratio=true]{img/note.png}}}%
-{\end{greyframe}}
+    \begin{window}[0,l,{%
+        \includegraphics[height=0.8cm,keepaspectratio=true]{img/note.png}%
+      },{}]}%
+{\end{window}\end{greyframe}}
 
 \newenvironment{astuce}%
 {\begin{greyframe}%
-    \parpic[l]{\includegraphics[height=0.8cm,keepaspectratio=true]{img/astuce.png}}}%
-{\end{greyframe}}
+    \begin{window}[0,l,{%
+        \includegraphics[height=0.8cm,keepaspectratio=true]{img/astuce.png}%
+      },{}]}%
+{\end{window}\end{greyframe}}
 
 \newenvironment{rstudio}%
 {\begin{greyframe}%
-    \parpic[l]{\includegraphics[height=0.8cm,keepaspectratio=true]{img/rstudio.png}}}%
-{\end{greyframe}}
+    \begin{window}[0,l,{%
+        \includegraphics[height=0.8cm,keepaspectratio=true]{img/rstudio.png}%
+      },{}]}%
+{\end{window}\end{greyframe}}
 
 \newenvironment{important}%
 {\begin{greyframe}%
-    \parpic[l]{\includegraphics[height=0.8cm,keepaspectratio=true]{img/important.png}}}%
-{\end{greyframe}}
+    \begin{window}[0,l,{%
+        \includegraphics[height=0.8cm,keepaspectratio=true]{img/important.png}%
+      },{}]}%
+{\end{window}\end{greyframe}}
 
 \newenvironment{greyverb}%
 {\setlength\fboxsep{10pt}%
@@ -135,8 +143,8 @@
 
 \title{\Huge{Introduction à \includegraphics[width=1.4cm]{img/Rlogo.jpg}}}
 \author{Julien Barnier\\ Centre Max Weber\\
-  CNRS -- UMR 5283\\ \href{mailto:julien.barnier@ens-lyon.fr}{\texttt{julien.barnier@ens-lyon.fr}}}
-\date{Version 2.0\\\today{}\\\vspace{3cm}\includegraphics[width=9cm]{img/xkcd_tech_chart.png}\\\footnotesize\texttt{http://xkcd.com/627/}}
+  \href{mailto:julien.barnier@ens-lyon.fr}{\texttt{julien.barnier@ens-lyon.fr}}}
+\date{Version 2.1\\\today{}\\\vspace{3cm}\includegraphics[width=9cm]{img/xkcd_tech_chart.png}\\\footnotesize\texttt{http://xkcd.com/627/}}
 
 
 \begin{document}
@@ -154,7 +162,7 @@ opts_chunk$set(fig.path="tmp/",
                highlight=TRUE,
                #size="footnotesize",
                comment=NA,
-               background=".95;.95;.95",
+               background="0.95;0.95;0.95",
                fig.align="center",
                out.width=".8\\textwidth")
 @
@@ -205,23 +213,31 @@ dernière version de ce document se trouve à l'adresse~:
 
 \section{Licence}
 
-\parpic[r]{\includegraphics[width=2.5cm]{img/by-nc-sa_eu.eps}}
+\begin{window}[0,r,{%
+    \includegraphics[width=2.5cm]{img/by-nc-sa_eu.eps}%
+},{}]
 %\noindent
 Ce document est diffusé sous licence \textit{Creative Commons
  Attribution - Pas d’utilisation commerciale - Partage dans les mêmes conditions}~:
+\end{window}
 
 %\noindent
 \url{https://creativecommons.org/licenses/by-nc-sa/3.0/fr/}
 
 
-
 \section{Remerciements}
 
 L'auteur tient à remercier Mayeul Kauffmann, Julien Biaudet, Frédérique
-Giraud, Joël Gombin et Joseph Larmarange pour leurs corrections et
-suggestions. Et un remerciement plus particulier à Milan Bouchet-Valat pour sa
-relecture très attentive et ses nombreuses et judicieuses remarques.
+Giraud, Joël Gombin pour leurs corrections et suggestions. Et un remerciement
+plus particulier à Milan Bouchet-Valat pour sa relecture très attentive et ses
+nombreuses et judicieuses remarques.
 
+Joseph Larmarange\footnote{\url{http://joseph.larmarange.net/}} est l'auteur
+de l'ensemble des encadrés concernant \textsf{RStudio} et de nombreuses autres
+corrections et améliorations. Il maintient par ailleurs une autre version de
+ce document, enrichie de chapitres sur différentes méthodes statistiques~:
+
+\url{https://github.com/larmarange/intro-r/tree/CoursM2}
 
 \section{Conventions typographiques}
 
@@ -686,7 +702,7 @@ maîtriser). Nous en reparlerons section~\ref{sec_indexation}
 \vpageref{sec_indexation}.
 
 \begin{rstudio}
-  Sous \textsf{RStudio}, vous avez du remarquer que ce dernier effectue une 
+  Sous \textsf{RStudio}, vous avez dû remarquer que ce dernier effectue une 
   coloration syntaxique. Lorsque vous tapez une commande, les valeurs numériques
   sont affichées dans une certaine couleur, les valeurs textuelles dans une 
   autre et les noms des fonctions dans une troisième. De plus, si vous tapez une
@@ -892,11 +908,11 @@ c(1:4,8:11)
 
 
 \begin{exo}{sommevect}
-  On a demandé à 4 ménages le revenu du chef de ménage, celui de son
-  conjoint, et le nombre de personnes du ménage~:
+  On a demandé à 4 ménages le revenu des deux conjoints, et le nombre de
+  personnes du ménage~:
 <<eval=FALSE>>=
-chef <- c(1200, 1180, 1750, 2100)
-conjoint <- c(1450, 1870, 1690, 0)
+conjoint1 <- c(1200, 1180, 1750, 2100)
+conjoint2 <- c(1450, 1870, 1690, 0)
 nb.personnes <- c(4, 2, 3, 2)
 @ 
 Calculez le revenu total par personne du ménage.
@@ -904,14 +920,14 @@ Calculez le revenu total par personne du ménage.
 
 \begin{exo}{maxvect}
   Dans l'exercice précédent, calculez le revenu minimum et le revenu
-  maximum parmi ceux du chef de ménage~:
+  maximum parmi ceux du premier conjoint~:
 <<eval=FALSE>>=
-chef <- c(1200, 1180, 1750, 2100)
+conjoint1 <- c(1200, 1180, 1750, 2100)
 @ 
   Recommencer avec les revenus suivants, parmi lesquels l'un des
   enquêtés n'a pas voulu répondre~:
 <<eval=FALSE>>=
-chef.na <- c(1200, 1180, 1750, NA)
+conjoint1.na <- c(1200, 1180, 1750, NA)
 @ 
 \end{exo}
 
@@ -1941,10 +1957,8 @@ donnees <- read.data("fichier.dta", to.data.frame = TRUE)
  L'importation des dates est parfois mal gérées. Dans ces cas là, l'opération
  suivante peut fonctionner. Sans garantie néanmoins, il est toujours vivement
  conseillé de vérifier le résultat obtenu !
- 
- <<eval=FALSE>>=
-  donnees$date <- as.Date(donnees$Date/(1000*3600*24),origin='1960-01-01')
- @ 
+
+ \texttt{donnees\$date <- as.Date(donnees\$Date/(1000*3600*24), origin='1960-01-01')}
 \end{astuce}
 
 \subsection{Fichiers \texttt{dbf}}
@@ -2002,7 +2016,7 @@ load("export.RData")
 
 \begin{important}
   Si entre temps vous aviez modifié votre tableau \texttt{d}, vos modifications
-  seront perdus. En effet, si lors du chargement de données, un objet du même 
+  seront perdues. En effet, si lors du chargement de données, un objet du même 
   nom existe en mémoire, ce dernier sera remplacé par l'objet importé.
 \end{important}
 
@@ -2885,15 +2899,16 @@ fournis directement à la fonction appelée.
 tapply(d$bricol, d$sexe, freq, total=TRUE)
 @ 
 
-\begin{remarque}
-  La fonction \rfunc{by} est un équivalent (pour les tableaux de données) de
-  \rfunc{tapply}. La présentation des résultats diffère légèrement.
+
+À noter également, la fonction \rfunc{by} est un équivalent (pour les tableaux
+de données) de \rfunc{tapply}. La présentation des résultats diffère
+légèrement.
   
-  <<>>=
-  tapply(d$age, d$sexe, mean)
-  by(d$age, d$sexe, mean)
-  @
-\end{remarque}
+<<>>=
+tapply(d$age, d$sexe, mean)
+by(d$age, d$sexe, mean)
+@
+
 
 
 \section{Recodages}
@@ -4147,7 +4162,7 @@ Le test est extrêmement significatif. L'intervalle de confiance à
   peut paraître étrange pour les non avertis. Cela signifie tout simplement
   1,611 multiplié par 10 à la puissance -7, autrement dit 0,0000001611. Cette
   manière de représenter un nombre est couramment appelée \textit{notation
-  scientifique}. Voir aussi \url{http://fr.wikipedia.org/wiki/Notation_scientifique}
+  scientifique}.
 \end{important}
 
 Nous sommes cependant allés un peu vite en besogne, car nous avons
@@ -4254,13 +4269,12 @@ suivante~:
 table(d$sport, d$qualreg)
 @ 
 
-\begin{astuce}
-  Il est tout à fait possible de croiser trois variables ou plus. Par exemple :
+Il est d'ailleurs tout à fait possible de croiser trois variables ou plus. Par
+exemple~:
   
-  <<>>=
-  table(d$sport,d$cuisine,d$sexe)
-  @ 
-\end{astuce}
+<<>>=
+table(d$sport,d$cuisine,d$sexe)
+@ 
 
 On n'a cependant que les effectifs, ce qui rend difficile les
 comparaisons. L'extension \questionr \marqr fournit des fonctions
@@ -4304,7 +4318,7 @@ ctab
 @ 
 
 Ou bien ponctuellement en passant les mêmes arguments aux fonctions
-\rfunc{print} (pour affichage dans \R) ou \rfunc{copy} (pour export
+\rfunc{print} (pour affichage dans \R) ou \rfunc{clipcopy} (pour export
 vers un logiciel externe)~:
 
 <<>>=
@@ -4358,17 +4372,14 @@ d'autres tableaux croisés. On peut pour cela utiliser la fonction
 cramer.v(tab)
 @ 
 
-
-\begin{astuce}
-  Pour un tableau à 2x2 entrées, il est possible de calculer le test exact de
-  Fisher avec la fonction \rfunc{fisher.test}. On peut soit lui passer le 
-  résultat de \rfunc{table}, soit directement les deux variables à croiser.
+Et pour un tableau à 2x2 entrées, il est possible de calculer le test exact de
+Fisher avec la fonction \rfunc{fisher.test}. On peut soit lui passer le
+résultat de \rfunc{table}, soit directement les deux variables à croiser.
   
-  <<>>=
+<<>>=
 lprop(table(d$sexe,d$cuisine))
 fisher.test(table(d$sexe,d$cuisine))
 @ 
-\end{astuce}
 
 \subsection{Représentation graphique}
 
@@ -4471,7 +4482,6 @@ On les utilise de la manière suivante~:
 <<wtdmean,warning=FALSE,message=FALSE,cache=FALSE>>=
 library(questionr)
 mean(d$age)
-library(questionr)
 wtd.mean(d$age, weights=d$poids)
 wtd.var(d$age, weights=d$poids)
 @ 
@@ -4674,7 +4684,7 @@ texte ou une application externe.
 
 Les tableaux générés par \R (et plus largement, tous les types
 d'objets) peuvent être exportés pour inclusion dans un traitement de
-texte à l'aide de la fonction \rfunc{copy} \marqr de l'extension
+texte à l'aide de la fonction \rfunc{clipcopy} \marqr de l'extension
 \questionr\footnote{Celle-ci nécessite que l'extension \texttt{R2HTML} soit
   également installée sur le système \textit{via}
   \texttt{install.packages("R2HTML",dep=TRUE)}.}.
@@ -4693,7 +4703,7 @@ tab
 \subsection{Copier/coller vers \textsf{Excel} et \textsf{Word} \textit{via} le presse-papier}
 
 La première possibilité est d'utiliser les options par défaut de
-\rfunc{copy}. Celle-ci va alors transformer le tableau (ou l'objet)
+\rfunc{clipcopy}. Celle-ci va alors transformer le tableau (ou l'objet)
 en \texttt{HTML} et placer le résultat dans le presse papier du
 système. Ceci ne fonctionne malheureusement que sous
 \textsf{Windows}\footnote{En fait cela fonctionne aussi sous
@@ -4702,7 +4712,7 @@ système. Ceci ne fonctionne malheureusement que sous
   mais n'a pas pu être testé.}.
 
 <<>>=
-copy(tab)
+clipcopy(tab)
 @ 
 
 On peut ensuite récupérer le résultat dans une feuille \textsf{Excel} en
@@ -4726,12 +4736,12 @@ L'autre possibilité ne nécessite pas de passer par \textsf{Excel}, et
 fonctionne sous \textsf{Word}, \textsf{OpenOffice} et \textsf{LibreOffice }sur
 toutes les plateformes.
 
-Elle nécessite de passer à la fonction \rfunc{copy} l'option
+Elle nécessite de passer à la fonction \rfunc{clipcopy} l'option
 \texttt{file=TRUE} qui enregistre le contenu de l'objet dans un
 fichier plutôt que de le placer dans le presse-papier~:
 
 <<>>=
-copy(tab, file=TRUE)
+clipcopy(tab, file=TRUE)
 @ 
 
 
@@ -4740,7 +4750,7 @@ Par défaut le résultat est placé dans un fichier nommé
 le nom et l'emplacement avec l'option \texttt{filename}~:
 
 <<eval=FALSE>>=
-copy(tab, file=TRUE, filename="exports/tab1.html")
+clipcopy(tab, file=TRUE, filename="exports/tab1.html")
 @ 
 
 On peut ensuite l'intégrer directement dans \textsf{Word} ou dans
@@ -6134,10 +6144,10 @@ c(2,4,6,8)
 
 \begin{solution}{sommevect}
 <<>>=
-chef <- c(1200, 1180, 1750, 2100)
-conjoint <- c(1450, 1870, 1690, 0)
+conjoint1 <- c(1200, 1180, 1750, 2100)
+conjoint2 <- c(1450, 1870, 1690, 0)
 nb.personnes <- c(4, 2, 3, 2)
-(chef + conjoint) / nb.personnes
+(conjoint1 + conjoint2) / nb.personnes
 @ 
 \end{solution}
 
@@ -6145,14 +6155,14 @@ nb.personnes <- c(4, 2, 3, 2)
 
 \begin{solution}{maxvect}
 <<>>=
-chef <- c(1200, 1180, 1750, 2100)
-min(chef)
-max(chef)
-chef.na <- c(1200, 1180, 1750, NA)
-min(chef.na)
-max(chef.na)
-min(chef.na, na.rm=TRUE)
-max(chef.na, na.rm=TRUE)
+conjoint1 <- c(1200, 1180, 1750, 2100)
+min(conjoint1)
+max(conjoint1)
+conjoint1.na <- c(1200, 1180, 1750, NA)
+min(conjoint1.na)
+max(conjoint1.na)
+min(conjoint1.na, na.rm=TRUE)
+max(conjoint1.na, na.rm=TRUE)
 @ 
 \end{solution}
 
